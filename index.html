@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Семейный Архив и Родословное Древо</title>
+    <style>
+        /* Стиль семейного альбома */
+        body {
+            background-color: #F5F2EB; /* Мягкий бежевый фон */
+            color: #333333; /* Темно-серый текст для легкого чтения */
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Экран блокировки (Пароль) */
+        #password-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #EFEBE4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #D6CFC4;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #C4BCAF;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #8C7B6E;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #6E5F54;
+        }
+        .error-msg {
+            color: #A94442;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Основной контент сайта (скрыт до ввода пароля) */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin: 40px 0;
+            border-bottom: 2px double #C4BCAF;
+            padding-bottom: 20px;
+        }
+        h1 { color: #4A3E3D; margin-bottom: 5px; }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            border: 1px solid #E0D9CE;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        /* Стилизация Древа (Базовая схема) */
+        .tree-container {
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+        .tree-node {
+            background: #FDFBF7;
+            border: 1px solid #8C7B6E;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .tree-node h4 { margin: 0 0 5px 0; color: #4A3E3D; }
+        .tree-node p { margin: 0; font-size: 13px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <!-- ЭКРАН ВВОДА ПАРОЛЯ -->
+    <div id="password-screen">
+        <div class="login-box">
+            <h2>Семейный Архив</h2>
+            <p>Для доступа к древу введите общий семейный пароль:</p>
+            <input type="password" id="password-input" placeholder="Введите пароль...">
+            <button onclick="checkPassword()">Войти в архив</button>
+            <div class="error-msg" id="error-message">Неверный пароль. Попробуйте еще раз.</div>
+        </div>
+    </div>
+
+    <!-- ОСНОВНОЙ САЙТ -->
+    <div id="main-content">
+        <header>
+            <h1>Архив Нашего Рода</h1>
+            <p><i>История фамилии, сохраненная для потомков</i></p>
+        </header>
+
+        <section class="section">
+            <h2>Приветствие и История</h2>
+            <p>Добро пожаловать в наш семейный архив. Этот сайт создан для того, чтобы память о наших предках, их жизни, труде и достижениях сохранялась на поколения вперед. Здесь вы найдете хронологию нашего рода, исторические справки и интерактивную карту.</p>
+        </section>
+
+        <section class="section">
+            <h2>Родословное Древо (Демо)</h2>
+            <div class="tree-container">
+                <!-- Пример одной карточки предка -->
+                <div class="tree-node">
+                    <h4>Иванов Иван Иванович</h4>
+                    <p>1900 — 1975</p>
+                    <p><i>Место рождения: г. Москва</i></p>
+                </div>
+            </div>
+            <p style="font-size: 14px; color: #777; text-align: center; margin-top: 15px;">
+                * Это стартовый каркас. Позже мы добавим сюда полноценное ветвистое древо.
+            </p>
+        </section>
+    </div>
+
+    <script>
+        // Ваш семейный пароль. Вы можете изменить его прямо здесь:
+        const FAMILY_PASSWORD = "NashRod2026"; 
+
+        function checkPassword() {
+            const userInput = document.getElementById("password-input").value;
+            const errorMsg = document.getElementById("error-message");
+            
+            if (userInput === FAMILY_PASSWORD) {
+                // Скрываем экран пароля и показываем сайт
+                document.getElementById("password-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            } else {
+                // Показываем ошибку
+                errorMsg.style.display = "block";
+            }
+        }
+
+        // Позволяет отправлять пароль по нажатию клавиши Enter
+        document.getElementById("password-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
