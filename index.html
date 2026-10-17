@@ -3,131 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейный Архив и Родословное Древо Дьяченко</title>
+    <title>Семейный Архив и Родословное Древо</title>
     <style>
         body {
-            background-color: #F4EFE3;
-            background-image: radial-gradient(rgba(230,217,190,0.3) 15%, transparent 16%),
-                              radial-gradient(rgba(215,200,170,0.3) 15%, transparent 16%);
-            background-size: 60px 60px;
-            background-position: 0 0, 30px 30px;
-            color: #2E2522;
+            background-color: #F5F2EB;
+            color: #333333;
             font-family: 'Georgia', serif;
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; align-items: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
+        /* Защита паролем */
         #password-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #ECE5D5;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #EFEBE4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             z-index: 9999;
         }
         .login-box {
-            background: #FDFBF7; padding: 40px; border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(74,62,61,0.15);
-            border: 2px solid #C4BCAF; text-align: center;
-            max-width: 400px; width: 80%;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #D6CFC4;
+            text-align: center;
+            max-width: 400px;
+            width: 80%;
         }
         input[type="password"], input[type="text"], input[type="email"], select, textarea {
-            width: 100%; padding: 12px; margin: 10px 0 15px 0;
-            border: 1px solid #B5A896; border-radius: 6px;
-            box-sizing: border-box; font-size: 16px; background: #FFFDF9;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 15px 0;
+            border: 1px solid #C4BCAF;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-family: sans-serif;
         }
+        textarea { height: 100px; resize: vertical; }
         
-        .action-btn {
-            background-color: #6E5F54; color: white; border: none;
-            padding: 12px 28px; font-size: 16px; border-radius: 6px;
-            cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        button {
+            background-color: #8C7B6E;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
-        .action-btn:hover { background-color: #4A3E3D; transform: translateY(-1px); }
+        button:hover { background-color: #6E5F54; }
         .error-msg { color: #A94442; font-size: 14px; margin-top: 10px; display: none; }
 
+        /* Контент сайта */
         #main-content {
-            display: none; width: 100%; max-width: 1200px; padding: 20px; box-sizing: border-box;
+            display: none;
+            width: 100%;
+            max-width: 1100px;
+            padding: 20px;
+            box-sizing: border-box;
         }
         header {
-            text-align: center; margin: 40px 0;
-            border-bottom: 3px double #B5A896; padding-bottom: 25px;
+            text-align: center;
+            margin: 40px 0;
+            border-bottom: 2px double #C4BCAF;
+            padding-bottom: 20px;
         }
-        h1 { color: #4A3E3D; font-size: 2.5em; }
-        
+        h1 { color: #4A3E3D; }
         .section {
-            background: #FDFBF7; padding: 35px; margin-bottom: 35px;
-            border-radius: 8px; border: 1px solid #DED7C9;
-            box-shadow: 0 4px 15px rgba(74,62,61,0.04);
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+            border: 1px solid #E0D9CE;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
+        /* Семейное древо */
         .tree {
-            display: flex; flex-direction: column; align-items: center;
-            overflow-x: auto; padding: 40px 20px;
-            background: #FFFDF9; border: 2px solid #D5CBB7; border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: auto;
+            padding: 20px;
+            background: #FDFBF7;
+            border: 1px dashed #C4BCAF;
+            border-radius: 4px;
         }
         .tree-row {
-            display: flex; justify-content: center; width: 100%; margin-bottom: 60px;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            position: relative;
+            width: 100%;
         }
-        
         .member-card {
-            background: #FAF6EE; border: 2px solid #5C755E;
-            padding: 15px 12px; border-radius: 25px 5px 25px 5px;
-            text-align: center; box-shadow: 0 4px 10px rgba(92,117,94,0.12);
-            margin: 10px 20px; min-width: 200px; cursor: pointer;
-            transition: all 0.3s ease;
+            background: #FDFBF7;
+            border: 2px solid #8C7B6E;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            margin: 0 20px;
+            min-width: 180px;
         }
-        .member-card:hover {
-            transform: scale(1.06) rotate(1deg);
-            background: #EBF2EC; box-shadow: 0 6px 15px rgba(92,117,94,0.25);
-        }
-        .member-card h4 { margin: 0 0 5px 0; color: #354236; font-size: 16px; }
-        .member-card p { margin: 0; font-size: 12px; color: #6E5F54; }
-        
-        .young-leaf {
-            border-color: #6B8E23; background: #F4F9EC; border-radius: 5px 25px 5px 25px;
-        }
-        .young-leaf:hover { background: #EAF4DB; }
-
+        .member-card h4 { margin: 0 0 5px 0; color: #4A3E3D; font-size: 16px; }
+        .member-card p { margin: 0; font-size: 13px; color: #666; }
         .role-tag {
-            font-size: 9px; background: rgba(92,117,94,0.1); padding: 3px 8px;
-            border-radius: 10px; display: inline-block; margin-top: 8px;
-            color: #4A5E4C; text-transform: uppercase; font-weight: bold;
-        }
-        .branch-title {
-            width: 100%; text-align: center; font-style: italic;
-            color: #6E5F54; margin-bottom: 15px; font-size: 15px; font-weight: bold;
-        }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(46,37,34,0.6); backdrop-filter: blur(4px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 10000; visibility: hidden; opacity: 0;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-card {
-            background: #FDFBF7; border: 3px double #B5A896; border-radius: 12px;
-            padding: 30px; max-width: 500px; width: 90%; position: relative;
-            transform: translateY(-20px); transition: transform 0.3s ease;
-        }
-        .modal-overlay.active { visibility: visible; opacity: 1; }
-        .modal-overlay.active .modal-card { transform: translateY(0); }
-        
-        .close-modal {
-            position: absolute; top: 15px; right: 20px; font-size: 24px;
-            cursor: pointer; color: #8C7B6E; font-weight: bold;
-        }
-        
-        .profile-photo-placeholder {
-            width: 120px; height: 150px; background: #EFEBE4;
-            border: 2px dashed #C4BCAF; border-radius: 6px;
-            margin: 0 auto 20px auto; display: flex;
-            align-items: center; justify-content: center;
-            color: #8C7B6E; font-size: 12px; text-align: center; padding: 5px;
+            font-size: 10px;
+            background: #EFEBE4;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 5px;
+            color: #8C7B6E;
+            text-transform: uppercase;
         }
 
-        .geo-list { list-style: none; padding: 0; }
-        .geo-item {
-            padding: 10px 15px; margin-bottom: 10px; background: #FDFBF7;
-            border-left: 4px solid #8C7B6E; border-radius: 0 4px 4px 0;
+        .print-btn { background-color: #5C6B67; margin-bottom: 20px; }
+        .print-btn:hover { background-color: #444F4C; }
+
+        @media print {
+            #password-screen, .print-btn, .form-section { display: none !important; }
+            body { background: white; color: black; }
+            #main-content { display: block !important; max-width: 100%; }
+            .section { border: none; box-shadow: none; padding: 10px; }
+            .tree { border: none; }
         }
     </style>
 </head>
@@ -137,9 +145,9 @@
     <div id="password-screen">
         <div class="login-box">
             <h2>Семейный Архив</h2>
-            <p>Для доступа к архиву введите семейный пароль:</p>
+            <p>Для доступа к древу введите общий семейный пароль:</p>
             <input type="password" id="password-input" placeholder="Введите пароль...">
-            <button class="action-btn" onclick="checkPassword()">Войти в архив</button>
+            <button onclick="checkPassword()">Войти в архив</button>
             <div class="error-msg" id="error-message">Неверный пароль. Попробуйте еще раз.</div>
         </div>
     </div>
@@ -147,63 +155,105 @@
     <!-- ОСНОВНОЙ САЙТ -->
     <div id="main-content">
         <header>
-            <h1>Архив Семьи Дьяченко</h1>
-            <p><i>История нашего рода, сохраненная для потомков</i></p>
-            <button class="action-btn" onclick="window.print()">🖨️ Сохранить в PDF / Печать</button>
+            <h1>Архив Нашего Рода</h1>
+            <p><i>История фамилии, сохраненная для потомков</i></p>
+            <button class="print-btn" onclick="window.print()">🖨️ Сохранить в PDF / Распечатать</button>
         </header>
 
         <section class="section">
-            <h2>О проекте</h2>
-            <p>Добро пожаловать. Это интерактивное древо нашей семьи. Нажимайте на любой листик-карточку родственника, чтобы открыть его детальный профиль с биографией.</p>
+            <h2>Приветствие и История</h2>
+            <p>Добро пожаловать в наш семейный архив. Этот сайт создан для того, чтобы память о наших предках, их жизни, труде и достижениях сохранялась на поколения вперед.</p>
         </section>
 
-        <!-- ДРЕВО -->
         <section class="section">
             <h2>Родословное Древо</h2>
             <div class="tree">
-                
-                <div class="branch-title">Старшее поколение</div>
+                <!-- ПОКОЛЕНИЕ 1 -->
                 <div class="tree-row">
-                    <div class="member-card" onclick="openProfile('Дьяченко Анатолий', 'Дедушка (по линии отца)', 'Данные о жизненном пути дедушки Анатолия сейчас собираются.')">
-                        <h4>Дьяченко Анатолий</h4>
-                        <p>Нажмите для анкеты</p>
+                    <div class="member-card">
+                        <h4>Иванов Петр Васильевич</h4>
+                        <p>1935 — 2012</p>
                         <span class="role-tag">Дедушка</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Дьяченко Тамара', 'Бабушка (по линии отца)', 'Данные о жизненном пути бабушки Тамары уточняются.')">
-                        <h4>Дьяченко Тамара</h4>
-                        <p>Нажмите для анкеты</p>
-                        <span class="role-tag">Бабушка</span>
-                    </div>
-                    <div class="member-card" onclick="openProfile('Никонович Андрей', 'Дедушка (по линии матери)', 'Исторические сведения в процессе наполнения.')">
-                        <h4>Никонович Андрей</h4>
-                        <p>Нажмите для анкеты</p>
-                        <span class="role-tag">Дедушка</span>
-                    </div>
-                    <div class="member-card" onclick="openProfile('Никонович Анна', 'Бабушка (по линии матери)', 'Биография бабушки Анны в процессе подготовки.')">
-                        <h4>Никонович Анна</h4>
-                        <p>Нажмите для анкеты</p>
+                    <div class="member-card">
+                        <h4>Иванова Анна Сергеевна</h4>
+                        <p>1938 — 2019</p>
                         <span class="role-tag">Бабушка</span>
                     </div>
                 </div>
-
-                <div class="branch-title">Родители</div>
+                <!-- ПОКОЛЕНИЕ 2 -->
                 <div class="tree-row">
-                    <div class="member-card" onclick="openProfile('Дьяченко Валерий Анатольевич', 'Отец семьи', 'Родился 22 декабря 1964 года. Ушел от нас 22 мая 2025 года. Наш главный защитник, мудрый отец и опора рода.')">
-                        <h4>Дьяченко Валерий А.</h4>
-                        <p>22.12.1964 — 22.05.2025</p>
+                    <div class="member-card">
+                        <h4>Иванов Иван Петрович</h4>
+                        <p>Род. 1965</p>
                         <span class="role-tag">Отец</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Дьяченко (Никонович) Ольга Андреевна', 'Мать семьи', 'Родилась 28 июля 1964 года. Хранительница домашнего очага. Покинула этот мир 23 декабря 2016 года.')">
-                        <h4>Дьяченко Ольга А.</h4>
-                        <p>28.07.1964 — 23.12.2016</p>
+                    <div class="member-card">
+                        <h4>Иванова Елена Николаевна</h4>
+                        <p>Род. 1968</p>
                         <span class="role-tag">Мать</span>
                     </div>
                 </div>
-
-                <div class="branch-title">Дети</div>
+                <!-- ПОКОЛЕНИЕ 3 -->
                 <div class="tree-row">
-                    <div class="member-card young-leaf" onclick="openProfile('Дьяченко Александр Валерьевич', 'Старший сын', 'Родился 22 апреля 1988 года. Сын Валерия Анатольевича и Ольги Андреевны.')">
-                        <h4>Дьяченко Александр В.</h4>
-                        <p>Род. 22.04.1988</p>
-                        <span class="role-tag">Брат</span>
+                    <div class="member-card" style="border-color: #A94442;">
+                        <h4>Я (Вы)</h4>
+                        <p>Род. 1995</p>
+                        <span class="role-tag" style="background:#F2DEDE; color:#A94442;">Автор</span>
                     </div>
+                    <div class="member-card">
+                        <h4>Мой Брат</h4>
+                        <p>Род. 1998</p>
+                        <span class="role-tag">Модератор</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ОТПРАВКА ПРАВОК И МОДЕРАЦИЯ -->
+        <section class="section form-section">
+            <h2>✏️ Предложить изменения или добавить родственника</h2>
+            <p>Если вы хотите дополнить древо, вписать нового человека, прислать историю или исправить неточность — заполните форму ниже. Изменения появятся на сайте после проверки администратором.</p>
+            
+            <!-- ЗАМЕНИТЕ ССЫЛКУ В ACTION НА СВОЮ ИЗ ШАГА 1 -->
+            <form action="https://formspree.io/f/xgaodvoy" method="POST">
+                <label>Ваше имя и кем вы приходитесь семье:</label>
+                <input type="text" name="author_name" placeholder="Например: Алексей, внук Петра Васильевича" required>
+                
+                <label>Ваш Email (для связи):</label>
+                <input type="email" name="author_email" placeholder="name@example.com" required>
+
+                <label>Что вы хотите сделать?</label>
+                <select name="change_type">
+                    <option value="add_person">Добавить нового человека в древо</option>
+                    <option value="edit_info">Исправить существующие даты / имена</option>
+                    <option value="send_story">Прислать биографический текст / историю</option>
+                </select>
+
+                <label>Опишите изменения подробно (Имена, даты жизни, места рождения или текст истории):</label>
+                <textarea name="message" placeholder="Например: Добавьте сестру отца — Иванову Марию Петровну, родилась 12.05.1970 в г. Горький..." required></textarea>
+
+                <button type="submit">Отправить на модерацию</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        const FAMILY_PASSWORD = "NashRod2026"; 
+
+        function checkPassword() {
+            const userInput = document.getElementById("password-input").value;
+            const errorMsg = document.getElementById("error-message");
+            if (userInput === FAMILY_PASSWORD) {
+                document.getElementById("password-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+        document.getElementById("password-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") { checkPassword(); }
+        });
+    </script>
+</body>
+</html>
