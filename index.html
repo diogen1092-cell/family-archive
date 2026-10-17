@@ -37,15 +37,18 @@
             max-width: 400px;
             width: 80%;
         }
-        input[type="password"] {
+        input[type="password"], input[type="text"], input[type="email"], select, textarea {
             width: 100%;
             padding: 10px;
-            margin: 15px 0;
+            margin: 10px 0 15px 0;
             border: 1px solid #C4BCAF;
             border-radius: 4px;
             box-sizing: border-box;
             font-size: 16px;
+            font-family: sans-serif;
         }
+        textarea { height: 100px; resize: vertical; }
+        
         button {
             background-color: #8C7B6E;
             color: white;
@@ -83,7 +86,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
-        /* ИНТЕРАКТИВНОЕ СЕМЕЙНОЕ ДРЕВО (Иерархия) */
+        /* Семейное древо */
         .tree {
             display: flex;
             flex-direction: column;
@@ -110,7 +113,6 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
             margin: 0 20px;
             min-width: 180px;
-            position: relative;
         }
         .member-card h4 { margin: 0 0 5px 0; color: #4A3E3D; font-size: 16px; }
         .member-card p { margin: 0; font-size: 13px; color: #666; }
@@ -125,16 +127,11 @@
             text-transform: uppercase;
         }
 
-        /* Кнопка Печати */
-        .print-btn {
-            background-color: #5C6B67;
-            margin-bottom: 20px;
-        }
+        .print-btn { background-color: #5C6B67; margin-bottom: 20px; }
         .print-btn:hover { background-color: #444F4C; }
 
-        /* Стили для вывода на печать (PDF) */
         @media print {
-            #password-screen, .print-btn { display: none !important; }
+            #password-screen, .print-btn, .form-section { display: none !important; }
             body { background: white; color: black; }
             #main-content { display: block !important; max-width: 100%; }
             .section { border: none; box-shadow: none; padding: 10px; }
@@ -171,8 +168,7 @@
         <section class="section">
             <h2>Родословное Древо</h2>
             <div class="tree">
-                
-                <!-- ПОКОЛЕНИЕ 1: СТАРШИЕ ПРЕДКИ (Пример: Дедушки и Бабушки) -->
+                <!-- ПОКОЛЕНИЕ 1 -->
                 <div class="tree-row">
                     <div class="member-card">
                         <h4>Иванов Петр Васильевич</h4>
@@ -185,8 +181,7 @@
                         <span class="role-tag">Бабушка</span>
                     </div>
                 </div>
-
-                <!-- ПОКОЛЕНИЕ 2: РОДИТЕЛИ, ДЯДИ, ТЕТИ -->
+                <!-- ПОКОЛЕНИЕ 2 -->
                 <div class="tree-row">
                     <div class="member-card">
                         <h4>Иванов Иван Петрович</h4>
@@ -199,8 +194,7 @@
                         <span class="role-tag">Мать</span>
                     </div>
                 </div>
-
-                <!-- ПОКОЛЕНИЕ 3: ВЫ, БРАТЬЯ, СЕСТРЫ -->
+                <!-- ПОКОЛЕНИЕ 3 -->
                 <div class="tree-row">
                     <div class="member-card" style="border-color: #A94442;">
                         <h4>Я (Вы)</h4>
@@ -213,8 +207,34 @@
                         <span class="role-tag">Модератор</span>
                     </div>
                 </div>
-
             </div>
+        </section>
+
+        <!-- ОТПРАВКА ПРАВОК И МОДЕРАЦИЯ -->
+        <section class="section form-section">
+            <h2>✏️ Предложить изменения или добавить родственника</h2>
+            <p>Если вы хотите дополнить древо, вписать нового человека, прислать историю или исправить неточность — заполните форму ниже. Изменения появятся на сайте после проверки администратором.</p>
+            
+            <!-- ЗАМЕНИТЕ ССЫЛКУ В ACTION НА СВОЮ ИЗ ШАГА 1 -->
+            <form action="https://formspree.io/f/xgaodvoy" method="POST">
+                <label>Ваше имя и кем вы приходитесь семье:</label>
+                <input type="text" name="author_name" placeholder="Например: Алексей, внук Петра Васильевича" required>
+                
+                <label>Ваш Email (для связи):</label>
+                <input type="email" name="author_email" placeholder="name@example.com" required>
+
+                <label>Что вы хотите сделать?</label>
+                <select name="change_type">
+                    <option value="add_person">Добавить нового человека в древо</option>
+                    <option value="edit_info">Исправить существующие даты / имена</option>
+                    <option value="send_story">Прислать биографический текст / историю</option>
+                </select>
+
+                <label>Опишите изменения подробно (Имена, даты жизни, места рождения или текст истории):</label>
+                <textarea name="message" placeholder="Например: Добавьте сестру отца — Иванову Марию Петровну, родилась 12.05.1970 в г. Горький..." required></textarea>
+
+                <button type="submit">Отправить на модерацию</button>
+            </form>
         </section>
     </div>
 
