@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Семейный Архив и Родословное Древо</title>
     <style>
-        /* Стиль семейного альбома */
         body {
-            background-color: #F5F2EB; /* Мягкий бежевый фон */
-            color: #333333; /* Темно-серый текст для легкого чтения */
+            background-color: #F5F2EB;
+            color: #333333;
             font-family: 'Georgia', serif;
             margin: 0;
             padding: 0;
@@ -17,7 +16,7 @@
             align-items: center;
         }
         
-        /* Экран блокировки (Пароль) */
+        /* Защита паролем */
         #password-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -57,33 +56,24 @@
             cursor: pointer;
             transition: background 0.3s;
         }
-        button:hover {
-            background-color: #6E5F54;
-        }
-        .error-msg {
-            color: #A94442;
-            font-size: 14px;
-            margin-top: 10px;
-            display: none;
-        }
+        button:hover { background-color: #6E5F54; }
+        .error-msg { color: #A94442; font-size: 14px; margin-top: 10px; display: none; }
 
-        /* Основной контент сайта (скрыт до ввода пароля) */
+        /* Контент сайта */
         #main-content {
             display: none;
             width: 100%;
-            max-width: 900px;
+            max-width: 1100px;
             padding: 20px;
             box-sizing: border-box;
         }
-
         header {
             text-align: center;
             margin: 40px 0;
             border-bottom: 2px double #C4BCAF;
             padding-bottom: 20px;
         }
-        h1 { color: #4A3E3D; margin-bottom: 5px; }
-        
+        h1 { color: #4A3E3D; }
         .section {
             background: white;
             padding: 30px;
@@ -93,24 +83,63 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
 
-        /* Стилизация Древа (Базовая схема) */
-        .tree-container {
+        /* ИНТЕРАКТИВНОЕ СЕМЕЙНОЕ ДРЕВО (Иерархия) */
+        .tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: auto;
+            padding: 20px;
+            background: #FDFBF7;
+            border: 1px dashed #C4BCAF;
+            border-radius: 4px;
+        }
+        .tree-row {
             display: flex;
             justify-content: center;
-            overflow-x: auto;
-            padding: 20px 0;
+            margin-bottom: 40px;
+            position: relative;
+            width: 100%;
         }
-        .tree-node {
+        .member-card {
             background: #FDFBF7;
-            border: 1px solid #8C7B6E;
-            padding: 15px;
+            border: 2px solid #8C7B6E;
+            padding: 12px 20px;
             border-radius: 6px;
             text-align: center;
-            min-width: 150px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            margin: 0 20px;
+            min-width: 180px;
+            position: relative;
         }
-        .tree-node h4 { margin: 0 0 5px 0; color: #4A3E3D; }
-        .tree-node p { margin: 0; font-size: 13px; color: #666; }
+        .member-card h4 { margin: 0 0 5px 0; color: #4A3E3D; font-size: 16px; }
+        .member-card p { margin: 0; font-size: 13px; color: #666; }
+        .role-tag {
+            font-size: 10px;
+            background: #EFEBE4;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 5px;
+            color: #8C7B6E;
+            text-transform: uppercase;
+        }
+
+        /* Кнопка Печати */
+        .print-btn {
+            background-color: #5C6B67;
+            margin-bottom: 20px;
+        }
+        .print-btn:hover { background-color: #444F4C; }
+
+        /* Стили для вывода на печать (PDF) */
+        @media print {
+            #password-screen, .print-btn { display: none !important; }
+            body { background: white; color: black; }
+            #main-content { display: block !important; max-width: 100%; }
+            .section { border: none; box-shadow: none; padding: 10px; }
+            .tree { border: none; }
+        }
     </style>
 </head>
 <body>
@@ -131,52 +160,79 @@
         <header>
             <h1>Архив Нашего Рода</h1>
             <p><i>История фамилии, сохраненная для потомков</i></p>
+            <button class="print-btn" onclick="window.print()">🖨️ Сохранить в PDF / Распечатать</button>
         </header>
 
         <section class="section">
             <h2>Приветствие и История</h2>
-            <p>Добро пожаловать в наш семейный архив. Этот сайт создан для того, чтобы память о наших предках, их жизни, труде и достижениях сохранялась на поколения вперед. Здесь вы найдете хронологию нашего рода, исторические справки и интерактивную карту.</p>
+            <p>Добро пожаловать в наш семейный архив. Этот сайт создан для того, чтобы память о наших предках, их жизни, труде и достижениях сохранялась на поколения вперед.</p>
         </section>
 
         <section class="section">
-            <h2>Родословное Древо (Демо)</h2>
-            <div class="tree-container">
-                <!-- Пример одной карточки предка -->
-                <div class="tree-node">
-                    <h4>Иванов Иван Иванович</h4>
-                    <p>1900 — 1975</p>
-                    <p><i>Место рождения: г. Москва</i></p>
+            <h2>Родословное Древо</h2>
+            <div class="tree">
+                
+                <!-- ПОКОЛЕНИЕ 1: СТАРШИЕ ПРЕДКИ (Пример: Дедушки и Бабушки) -->
+                <div class="tree-row">
+                    <div class="member-card">
+                        <h4>Иванов Петр Васильевич</h4>
+                        <p>1935 — 2012</p>
+                        <span class="role-tag">Дедушка</span>
+                    </div>
+                    <div class="member-card">
+                        <h4>Иванова Анна Сергеевна</h4>
+                        <p>1938 — 2019</p>
+                        <span class="role-tag">Бабушка</span>
+                    </div>
                 </div>
+
+                <!-- ПОКОЛЕНИЕ 2: РОДИТЕЛИ, ДЯДИ, ТЕТИ -->
+                <div class="tree-row">
+                    <div class="member-card">
+                        <h4>Иванов Иван Петрович</h4>
+                        <p>Род. 1965</p>
+                        <span class="role-tag">Отец</span>
+                    </div>
+                    <div class="member-card">
+                        <h4>Иванова Елена Николаевна</h4>
+                        <p>Род. 1968</p>
+                        <span class="role-tag">Мать</span>
+                    </div>
+                </div>
+
+                <!-- ПОКОЛЕНИЕ 3: ВЫ, БРАТЬЯ, СЕСТРЫ -->
+                <div class="tree-row">
+                    <div class="member-card" style="border-color: #A94442;">
+                        <h4>Я (Вы)</h4>
+                        <p>Род. 1995</p>
+                        <span class="role-tag" style="background:#F2DEDE; color:#A94442;">Автор</span>
+                    </div>
+                    <div class="member-card">
+                        <h4>Мой Брат</h4>
+                        <p>Род. 1998</p>
+                        <span class="role-tag">Модератор</span>
+                    </div>
+                </div>
+
             </div>
-            <p style="font-size: 14px; color: #777; text-align: center; margin-top: 15px;">
-                * Это стартовый каркас. Позже мы добавим сюда полноценное ветвистое древо.
-            </p>
         </section>
     </div>
 
     <script>
-        // Ваш семейный пароль. Вы можете изменить его прямо здесь:
         const FAMILY_PASSWORD = "NashRod2026"; 
 
         function checkPassword() {
             const userInput = document.getElementById("password-input").value;
             const errorMsg = document.getElementById("error-message");
-            
             if (userInput === FAMILY_PASSWORD) {
-                // Скрываем экран пароля и показываем сайт
                 document.getElementById("password-screen").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
             } else {
-                // Показываем ошибку
                 errorMsg.style.display = "block";
             }
         }
-
-        // Позволяет отправлять пароль по нажатию клавиши Enter
         document.getElementById("password-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                checkPassword();
-            }
+            if (event.key === "Enter") { checkPassword(); }
         });
     </script>
 </body>
