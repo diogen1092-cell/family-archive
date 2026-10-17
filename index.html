@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейный Архив и Родословное Древо</title>
+    <title>Семейный Архив и Родословное Древо Дьяченко</title>
     <style>
         body {
             background-color: #F5F2EB;
@@ -66,7 +66,7 @@
         #main-content {
             display: none;
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
             padding: 20px;
             box-sizing: border-box;
         }
@@ -103,28 +103,48 @@
             margin-bottom: 40px;
             position: relative;
             width: 100%;
+            flex-wrap: nowrap;
         }
         .member-card {
             background: #FDFBF7;
             border: 2px solid #8C7B6E;
-            padding: 12px 20px;
+            padding: 15px 10px;
             border-radius: 6px;
             text-align: center;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            margin: 0 20px;
-            min-width: 180px;
+            margin: 10px 15px;
+            min-width: 220px;
         }
         .member-card h4 { margin: 0 0 5px 0; color: #4A3E3D; font-size: 16px; }
-        .member-card p { margin: 0; font-size: 13px; color: #666; }
+        .member-card p { margin: 0; font-size: 13px; color: #666; line-height: 1.4; }
         .role-tag {
             font-size: 10px;
             background: #EFEBE4;
             padding: 2px 6px;
             border-radius: 10px;
             display: inline-block;
-            margin-top: 5px;
+            margin-top: 8px;
             color: #8C7B6E;
             text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .branch-title {
+            width: 100%;
+            text-align: center;
+            font-style: italic;
+            color: #8C7B6E;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .geo-list { list-style: none; padding: 0; }
+        .geo-item {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background: #FDFBF7;
+            border-left: 4px solid #8C7B6E;
+            border-radius: 0 4px 4px 0;
         }
 
         .print-btn { background-color: #5C6B67; margin-bottom: 20px; }
@@ -155,105 +175,91 @@
     <!-- ОСНОВНОЙ САЙТ -->
     <div id="main-content">
         <header>
-            <h1>Архив Нашего Рода</h1>
-            <p><i>История фамилии, сохраненная для потомков</i></p>
-            <button class="print-btn" onclick="window.print()">🖨️ Сохранить в PDF / Распечатать</button>
+            <h1>Архив Семьи Дьяченко</h1>
+            <p><i>История нашего рода, сохраненная для потомков</i></p>
+            <button class="print-btn" onclick="window.print()">🖨️ Сохранить в PDF / Распечатать архив</button>
         </header>
 
         <section class="section">
-            <h2>Приветствие и История</h2>
-            <p>Добро пожаловать в наш семейный архив. Этот сайт создан для того, чтобы память о наших предках, их жизни, труде и достижениях сохранялась на поколения вперед.</p>
+            <h2>Приветствие</h2>
+            <p>Добро пожаловать в наш семейный архив. Этот сайт создан для того, чтобы память о наших предках, их жизни, труде и достижениях сохранялась на поколения вперед. Ниже представлено наше генеалогическое древо и хронология географии рода.</p>
         </section>
 
         <section class="section">
             <h2>Родословное Древо</h2>
             <div class="tree">
-                <!-- ПОКОЛЕНИЕ 1 -->
+                
+                <!-- ПОКОЛЕНИЕ 1: ДЕДУШКИ И БАБУШКИ -->
+                <div class="branch-title">Старшее поколение (Дедушки и Бабушки)</div>
                 <div class="tree-row">
                     <div class="member-card">
-                        <h4>Иванов Петр Васильевич</h4>
-                        <p>1935 — 2012</p>
-                        <span class="role-tag">Дедушка</span>
+                        <h4>Дьяченко Анатолий</h4>
+                        <p>Данные уточняются</p>
+                        <span class="role-tag">Дедушка (по папе)</span>
                     </div>
                     <div class="member-card">
-                        <h4>Иванова Анна Сергеевна</h4>
-                        <p>1938 — 2019</p>
-                        <span class="role-tag">Бабушка</span>
+                        <h4>Дьяченко Тамара</h4>
+                        <p>Данные уточняются</p>
+                        <span class="role-tag">Бабушка (по папе)</span>
+                    </div>
+                    <div class="member-card">
+                        <h4>Никонович Андрей</h4>
+                        <p>Данные уточняются</p>
+                        <span class="role-tag">Дедушка (по маме)</span>
+                    </div>
+                    <div class="member-card">
+                        <h4>Никонович Анна</h4>
+                        <p>Данные уточняются</p>
+                        <span class="role-tag">Бабушка (по маме)</span>
                     </div>
                 </div>
-                <!-- ПОКОЛЕНИЕ 2 -->
+
+                <!-- ПОКОЛЕНИЕ 2: РОДИТЕЛИ -->
+                <div class="branch-title">Родители</div>
                 <div class="tree-row">
                     <div class="member-card">
-                        <h4>Иванов Иван Петрович</h4>
-                        <p>Род. 1965</p>
+                        <h4>Дьяченко Валерий Анатольевич</h4>
+                        <p>22.12.1964 — 22.05.2025</p>
                         <span class="role-tag">Отец</span>
                     </div>
                     <div class="member-card">
-                        <h4>Иванова Елена Николаевна</h4>
-                        <p>Род. 1968</p>
+                        <h4>Дьяченко (Никонович)<br>Ольга Андреевна</h4>
+                        <p>28.07.1964 — 23.12.2016</p>
                         <span class="role-tag">Мать</span>
                     </div>
                 </div>
-                <!-- ПОКОЛЕНИЕ 3 -->
+
+                <!-- ПОКОЛЕНИЕ 3: ДЕТИ (ВЫ И БРАТ) -->
+                <div class="branch-title">Дети</div>
                 <div class="tree-row">
-                    <div class="member-card" style="border-color: #A94442;">
-                        <h4>Я (Вы)</h4>
-                        <p>Род. 1995</p>
-                        <span class="role-tag" style="background:#F2DEDE; color:#A94442;">Автор</span>
-                    </div>
                     <div class="member-card">
-                        <h4>Мой Брат</h4>
-                        <p>Род. 1998</p>
-                        <span class="role-tag">Модератор</span>
+                        <h4>Дьяченко Александр Валерьевич</h4>
+                        <p>Род. 22.04.1988</p>
+                        <span class="role-tag">Брат</span>
+                    </div>
+                    <div class="member-card" style="border-color: #5C6B67;">
+                        <h4>Дьяченко Владимир Валерьевич</h4>
+                        <p>Род. 09.10.1992</p>
+                        <span class="role-tag" style="background:#EBF2F0; color:#5C6B67;">Я (Автор)</span>
                     </div>
                 </div>
+
             </div>
+        </section>
+
+        <!-- ГЕОГРАФИЯ РОДА -->
+        <section class="section">
+            <h2>📍 Памятные места нашей семьи</h2>
+            <p>Здесь фиксируются ключевые города и регионы, связанные с историей нашей фамилии (места рождения, службы, работы или переселения):</p>
+            <ul class="geo-list">
+                <li class="geo-item"><b>Места памяти:</b> Вы можете прислать через форму ниже города, где родились или жили ваши родители, дедушки и бабушки, чтобы мы зафиксировали их здесь.</li>
+            </ul>
         </section>
 
         <!-- ОТПРАВКА ПРАВОК И МОДЕРАЦИЯ -->
         <section class="section form-section">
-            <h2>✏️ Предложить изменения или добавить родственника</h2>
-            <p>Если вы хотите дополнить древо, вписать нового человека, прислать историю или исправить неточность — заполните форму ниже. Изменения появятся на сайте после проверки администратором.</p>
+            <h2>✏️ Предложить изменения или добавить информацию</h2>
+            <p>Если вы хотите дополнить информацию о дедушках и бабушках (указать годы жизни, места рождения, прикрепить истории), заполните форму ниже. Изменения придут администратору на почту и будут внесены в архив.</p>
             
-            <!-- ЗАМЕНИТЕ ССЫЛКУ В ACTION НА СВОЮ ИЗ ШАГА 1 -->
-            <form action="https://formspree.io/f/xgaodvoy" method="POST">
-                <label>Ваше имя и кем вы приходитесь семье:</label>
-                <input type="text" name="author_name" placeholder="Например: Алексей, внук Петра Васильевича" required>
-                
-                <label>Ваш Email (для связи):</label>
-                <input type="email" name="author_email" placeholder="name@example.com" required>
-
-                <label>Что вы хотите сделать?</label>
-                <select name="change_type">
-                    <option value="add_person">Добавить нового человека в древо</option>
-                    <option value="edit_info">Исправить существующие даты / имена</option>
-                    <option value="send_story">Прислать биографический текст / историю</option>
-                </select>
-
-                <label>Опишите изменения подробно (Имена, даты жизни, места рождения или текст истории):</label>
-                <textarea name="message" placeholder="Например: Добавьте сестру отца — Иванову Марию Петровну, родилась 12.05.1970 в г. Горький..." required></textarea>
-
-                <button type="submit">Отправить на модерацию</button>
-            </form>
-        </section>
-    </div>
-
-    <script>
-        const FAMILY_PASSWORD = "NashRod2026"; 
-
-        function checkPassword() {
-            const userInput = document.getElementById("password-input").value;
-            const errorMsg = document.getElementById("error-message");
-            if (userInput === FAMILY_PASSWORD) {
-                document.getElementById("password-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
-            } else {
-                errorMsg.style.display = "block";
-            }
-        }
-        document.getElementById("password-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") { checkPassword(); }
-        });
-    </script>
-</body>
-</html>
+            <form action="https://formspree.io" method="POST">
+                <label>Ваше имя и родство:</label>
