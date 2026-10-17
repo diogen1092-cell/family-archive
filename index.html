@@ -78,9 +78,9 @@
         /* Стилизация карточек под листики дерева */
         .member-card {
             background: #FAF6EE;
-            border: 2px solid #5C755E; /* Зеленовато-древесный контур */
+            border: 2px solid #5C755E;
             padding: 15px 12px;
-            border-radius: 25px 5px 25px 5px; /* Форма листика */
+            border-radius: 25px 5px 25px 5px;
             text-align: center; box-shadow: 0 4px 10px rgba(92,117,94,0.12);
             margin: 10px 20px; min-width: 200px; cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -110,12 +110,6 @@
         .branch-title {
             width: 100%; text-align: center; font-style: italic;
             color: #6E5F54; margin-bottom: 15px; font-size: 15px; font-weight: bold;
-        }
-
-        /* Линии-ветви между карточками (Визуальный эффект связи) */
-        .tree-row::after {
-            content: ""; position: absolute; bottom: -40px; left: 10%; width: 80%;
-            height: 2px; background: #8C7B6E; z-index: 1; display: none; /* Для будущих сложных линий */
         }
 
         /* ИНТЕРАКТИВНОЕ ВСПЛЫВАЮЩЕЕ ОКНО (МОДАЛЬНОЕ) */
@@ -193,7 +187,7 @@
             <p>Добро пожаловать. Это интерактивное древо нашей семьи. Нажимайте на любой листик-карточку родственника, чтобы открыть его детальный профиль с биографией и историческим следом.</p>
         </section>
 
-        <!-- ДREBO -->
+        <!-- ДРЕВО -->
         <section class="section">
             <h2>Родословное Древо</h2>
             <div class="tree">
@@ -216,3 +210,7 @@
                         <p>Нажмите для анкеты</p>
                         <span class="role-tag">Дедушка</span>
                     </div>
+                    <div class="member-card" onclick="openProfile('Никонович Анна', 'Бабушка (по линии матери)', 'Биография и памятные семейные воспоминания о бабушке Анне в процессе подготовки.')">
+                        <h4>Никонович Анна</h4>
+                        <p>Нажмите для анкеты</p>
+                        <span class="role-tag">Бабушка</span>
