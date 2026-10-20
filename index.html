@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Семейный Архив Семьи Дьяченко</title>
+    <title>Семейный Архив и Родословное Древо Дьяченко</title>
     <style>
         body {
             background-color: #F4EFE3;
@@ -33,24 +33,25 @@
         }
         .action-btn:hover { background-color: #4A3E3D; }
         .error-msg { color: #A94442; font-size: 14px; margin-top: 10px; display: none; }
-        #main-content { display: none; width: 100%; max-width: 1200px; padding: 20px; box-sizing: border-box; }
+        #main-content { display: none; width: 100%; max-width: 1300px; padding: 20px; box-sizing: border-box; }
         header { text-align: center; margin: 40px 0; border-bottom: 3px double #B5A896; padding-bottom: 25px; }
         h1 { color: #4A3E3D; font-size: 2.5em; }
         .section { background: #FDFBF7; padding: 35px; margin-bottom: 35px; border-radius: 8px; border: 1px solid #DED7C9; box-shadow: 0 4px 15px rgba(74,62,61,0.04); }
         .tree { display: flex; flex-direction: column; align-items: center; overflow-x: auto; padding: 40px 20px; background: #FFFDF9; border: 2px solid #D5CBB7; border-radius: 12px; }
-        .tree-row { display: flex; justify-content: center; width: 100%; margin-bottom: 60px; }
+        .tree-row { display: flex; justify-content: center; width: 100%; margin-bottom: 50px; flex-wrap: nowrap; }
         .member-card {
-            background: #FAF6EE; border: 2px solid #5C755E; padding: 15px 12px;
+            background: #FAF6EE; border: 2px solid #5C755E; padding: 15px 10px;
             border-radius: 25px 5px 25px 5px; text-align: center; box-shadow: 0 4px 10px rgba(92,117,94,0.12);
-            margin: 10px 20px; min-width: 200px; cursor: pointer; transition: all 0.3s ease;
+            margin: 5px 10px; min-width: 210px; cursor: pointer; transition: all 0.3s ease;
         }
         .member-card:hover { transform: scale(1.06) rotate(1deg); background: #EBF2EC; }
-        .member-card h4 { margin: 0 0 5px 0; color: #354236; font-size: 16px; }
-        .member-card p { margin: 0; font-size: 12px; color: #6E5F54; }
+        .member-card h4 { margin: 0 0 5px 0; color: #354236; font-size: 15px; }
+        .member-card p { margin: 0; font-size: 11px; color: #6E5F54; }
+        .old-leaf { border-color: #8B5A2B; background: #FDF8F2; box-shadow: 0 4px 10px rgba(139,90,43,0.1); }
         .young-leaf { border-color: #6B8E23; background: #F4F9EC; border-radius: 5px 25px 5px 25px; }
-        .young-leaf:hover { background: #EAF4DB; }
-        .role-tag { font-size: 9px; background: rgba(92,117,94,0.1); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 8px; color: #4A5E4C; text-transform: uppercase; font-weight: bold; }
-        .branch-title { width: 100%; text-align: center; font-style: italic; color: #6E5F54; margin-bottom: 15px; font-size: 15px; font-weight: bold; }
+        .role-tag { font-size: 9px; background: rgba(92,117,94,0.1); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 6px; color: #4A5E4C; text-transform: uppercase; font-weight: bold; }
+        .old-tag { background: rgba(139,90,43,0.1); color: #8B5A2B; }
+        .branch-title { width: 100%; text-align: center; font-style: italic; color: #6E5F54; margin-bottom: 12px; font-size: 14px; font-weight: bold; border-bottom: 1px dotted #D5CBB7; padding-bottom: 4px; }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(46,37,34,0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 10000; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .modal-card { background: #FDFBF7; border: 3px double #B5A896; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%; position: relative; }
         .modal-overlay.active { visibility: visible; opacity: 1; }
@@ -80,50 +81,73 @@
 
         <section class="section">
             <h2>О проекте</h2>
-            <p>Добро пожаловать. Это интерактивное древо нашей семьи. Нажимайте на любой листик-карточку родственника, чтобы открыть его профиль с биографией.</p>
+            <p>Добро пожаловать. Это интерактивное древо нашей семьи. Нажимайте на любой листик-карточку родственника, чтобы открыть его детальный профиль с биографией.</p>
         </section>
 
         <section class="section">
             <h2>Родословное Древо</h2>
             <div class="tree">
-                <div class="branch-title">Старшее поколение</div>
+                
+                <!-- СЛОЙ 1: ПРАДЕДУШКИ И ПРАБАБУШКИ -->
+                <div class="branch-title">Старшие предки (Прадедушки и Прабабушки)</div>
                 <div class="tree-row">
-                    <div class="member-card" onclick="openProfile('Дьяченко Анатолий', 'Дедушка (по линии отца)', 'Данные о дедушке Анатолии собираются.')">
-                        <h4>Дьяченко Анатолий</h4><p>Нажмите для анкеты</p><span class="role-tag">Дедушка</span>
+                    <div class="member-card old-leaf" onclick="openProfile('Дьяченко Иван Иванович', 'Прадедушка (по линии отца)', 'Родился 5 февраля 1906 года. Отец дедушки Анатолия Ивановича.')">
+                        <h4>Дьяченко Иван И.</h4><p>05.02.1906 — гг. уточняются</p><span class="role-tag old-tag">Прадедушка</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Дьяченко Тамара', 'Бабушка (по линии отца)', 'Данные о бабушке Тамары уточняются.')">
-                        <h4>Дьяченко Тамара</h4><p>Нажмите для анкеты</p><span class="role-tag">Бабушка</span>
+                    <div class="member-card old-leaf" onclick="openProfile('Дьяченко (Котова) Надежда Павловна', 'Прабабушка (по линии отца)', 'Родилась в 1906 году. Девичья фамилия — Котова. Мать дедушки Анатолия Ивановича.')">
+                        <h4>Дьяченко Надежда П.</h4><p>1906 — гг. уточняются</p><span class="role-tag old-tag">Прабабушка</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Никонович Андрей', 'Дедушка (по линии матери)', 'Исторические сведения наполняются.')">
-                        <h4>Никонович Андрей</h4><p>Нажмите для анкеты</p><span class="role-tag">Дедушка</span>
+                    <div class="member-card old-leaf" onclick="openProfile('Иванов Евгений Михайлович', 'Прадедушка (по линии отца)', 'Родился 2 февраля 1911 года. Отец бабушки Тамары Евгеньевны.')">
+                        <h4>Иванов Евгений М.</h4><p>02.02.1911 — гг. уточняются</p><span class="role-tag old-tag">Прадедушка</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Никонович Анна', 'Бабушка (по линии матери)', 'Биография в процессе подготовки.')">
-                        <h4>Никонович Анна</h4><p>Нажмите для анкеты</p><span class="role-tag">Бабушка</span>
+                    <div class="member-card old-leaf" onclick="openProfile('Иванова (Рудь) Александра Родионовна', 'Прабабушка (по линии отца)', 'Родилась в 1916 году. Девичья фамилия — Рудь. Мать бабушки Тамары Евгеньевны.')">
+                        <h4>Иванова Александра Р.</h4><p>1916 — гг. уточняются</p><span class="role-tag old-tag">Прабабушка</span>
                     </div>
                 </div>
 
+                <!-- СЛОЙ 2: ДЕДУШКИ И БАБУШКИ -->
+                <div class="branch-title">Поколение дедушек и бабушек</div>
+                <div class="tree-row">
+                    <div class="member-card" onclick="openProfile('Дьяченко Анатолий Иванович', 'Дедушка (по линии отца)', 'Родился 18 июня 1932 года. Мудрый глава семьи. Покинул этот мир в День Победы, 9 мая 2019 года.')">
+                        <h4>Дьяченко Анатолий И.</h4><p>18.06.1932 — 09.05.2019</p><span class="role-tag">Дедушка</span>
+                    </div>
+                    <div class="member-card" onclick="openProfile('Дьяченко (Иванова) Тамара Евгеньевна', 'Бабушка (по линии отца)', 'Родилась 12 декабря 1939 года. Девичья фамилия — Иванова. Ушла от нас 12 июля 2024 года.')">
+                        <h4>Дьяченко Тамара Е.</h4><p>12.12.1939 — 12.07.2024</p><span class="role-tag">Бабушка</span>
+                    </div>
+                    <div class="member-card" onclick="openProfile('Никонович Андрей Ануфриевич', 'Дедушка (по линии матери)', 'Родился 5 сентября 1927 года. Замечательный дедушка, опора материнской ветви рода. Ушел 11 июня 2006 года.')">
+                        <h4>Никонович Андрей А.</h4><p>05.09.1927 — 11.06.2006</p><span class="role-tag">Дедушка</span>
+                    </div>
+                    <div class="member-card" onclick="openProfile('Никонович Анна Яковлевна', 'Бабушка (по линии матери)', 'Родилась 4 февраля 1922 года. Хранительница истории и тепла материнской линии. Ушла 11 июля 2001 года.')">
+                        <h4>Никонович Анна Я.</h4><p>04.02.1922 — 11.07.2001</p><span class="role-tag">Бабушка</span>
+                    </div>
+                </div>
+
+                <!-- СЛОЙ 3: РОДИТЕЛИ -->
                 <div class="branch-title">Родители</div>
                 <div class="tree-row">
-                    <div class="member-card" onclick="openProfile('Дьяченко Валерий Анатольевич', 'Отец семьи', 'Родился 22 декабря 1964 года. Ушел от нас 22 мая 2025 года. Наш главный защитник, мудрый отец и опора рода.')">
+                    <div class="member-card" onclick="openProfile('Дьяченко Валерий Анатольевич', 'Отец семьи', 'Родился 22 декабря 1964 года. Сын Анатолия Ивановича и Тамары Евгеньевны. Ушел от нас 22 мая 2025 года.')">
                         <h4>Дьяченко Валерий А.</h4><p>22.12.1964 — 22.05.2025</p><span class="role-tag">Отец</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Дьяченко (Никонович) Ольга Андреевна', 'Мать семьи', 'Родилась 28 июля 1964 года. Хранительница домашнего очага. Покинула этот мир 23 декабря 2016 года.')">
+                    <div class="member-card" onclick="openProfile('Дьяченко (Никонович) Ольга Андреевна', 'Мать семьи', 'Родилась 28 июля 1964 года. Дочь Андрея Ануфриевича и Анны Яковлевны. Покинула этот мир 23 декабря 2016 года.')">
                         <h4>Дьяченко Ольга А.</h4><p>28.07.1964 — 23.12.2016</p><span class="role-tag">Мать</span>
                     </div>
                 </div>
 
+                <!-- СЛОЙ 4: ДЕТИ -->
                 <div class="branch-title">Дети</div>
                 <div class="tree-row">
-                    <div class="member-card young-leaf" onclick="openProfile('Дьяченко Александр Валерьевич', 'Старший сын', 'Родился 22 апреля 1988 года. Сын Валерия Анатольевича и Ольги Андреевны.')">
+                    <div class="member-card young-leaf" onclick="openProfile('Дьяченко Александр Валерьевич', 'Старший сын', 'Родился 22 апреля 1988 года. Старший брат, сын Валерия Анатольевича и Ольги Андреевны.')">
                         <h4>Дьяченко Александр В.</h4><p>Род. 22.04.1988</p><span class="role-tag">Брат</span>
                     </div>
-                    <div class="member-card young-leaf" onclick="openProfile('Дьяченко Vladimir Валерьевич', 'Младший сын', 'Родился 9 октября 1992 года. Создатель данного проекта.')">
+                    <div class="member-card young-leaf" onclick="openProfile('Дьяченко Владимир Валерьевич', 'Младший сын / Создатель сайта', 'Родился 9 октября 1992 года. Создатель и технический хранитель этого интерактивного семейного архива.')">
                         <h4>Дьяченко Владимир В.</h4><p>Род. 09.10.1992</p><span class="role-tag">Я (Автор)</span>
                     </div>
                 </div>
+
             </div>
         </section>
 
+        <!-- ОКНО АНКЕТЫ -->
         <div class="modal-overlay" id="profile-modal" onclick="closeProfile(event)">
             <div class="modal-card">
                 <span class="close-modal" onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</span>
