@@ -28,10 +28,21 @@
         .old-tag { background: rgba(139,90,43,0.1); color: #8B5A2B; }
         .branch-title { width: 100%; text-align: center; font-style: italic; color: #6E5F54; margin-bottom: 12px; font-size: 14px; font-weight: bold; border-bottom: 1px dotted #D5CBB7; padding-bottom: 4px; }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(46,37,34,0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 10000; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; }
-        .modal-card { background: #FDFBF7; border: 3px double #B5A896; border-radius: 12px; padding: 30px; max-width: 500px; width: 90%; position: relative; }
-        .modal-overlay.active { visibility: visible; opacity: 1; }
-        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #8C7B6E; font-weight: bold; }
-        .profile-photo-placeholder { width: 150px; height: 190px; background: #EFEBE4; border: 2px dashed #C4BCAF; border-radius: 6px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center; color: #8C7B6E; font-size: 12px; overflow: hidden; }
+        .modal-card { background: #FDFBF7; border: 3px double #B5A896; border-radius: 12px; padding: 25px; max-width: 550px; width: 90%; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #8C7B6E; font-weight: bold; z-index: 10; }
+        .gallery-container { width: 100%; height: 260px; background: #EFEBE4; border: 2px solid #C4BCAF; border-radius: 6px; margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .gallery-slide { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .gallery-slide.active { display: block; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(110,95,84,0.7); color: white; border: none; font-size: 18px; padding: 8px 12px; cursor: pointer; border-radius: 4px; transition: background 0.2s; z-index: 5; }
+        .nav-arrow:hover { background: rgba(74,62,61,0.9); }
+        .prev-arrow { left: 10px; }
+        .next-arrow { right: 10px; }
+        .tabs-nav { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #D5CBB7; padding-bottom: 5px; }
+        .tab-btn { background: none; border: none; font-family: inherit; font-size: 14px; color: #8C7B6E; cursor: pointer; padding: 5px 10px; transition: all 0.2s; }
+        .tab-btn.active { color: #4A3E3D; font-weight: bold; border-bottom: 2px solid #6E5F54; }
+        .grid-album { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
+        .album-photo { width: 100%; height: 120px; object-fit: cover; border: 2px solid #D5CBB7; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s; cursor: pointer; }
+        .album-photo:hover { transform: scale(1.04); border-color: #5C755E; }
         .geo-list { list-style: none; padding: 0; }
         .geo-item { padding: 10px 15px; margin-bottom: 10px; background: #FDFBF7; border-left: 4px solid #8C7B6E; border-radius: 0 4px 4px 0; }
     </style>
@@ -56,7 +67,7 @@
 
         <section class="section">
             <h2>О проекте</h2>
-            <p>Добро пожаловать. Это интерактивное древо нашей семьи. Нажимайте на любой листик-карточку родственника, чтобы открыть его детальный профиль с архивной фотографией.</p>
+            <p>Добро пожаловать. Это интерактивное древо нашей семьи. Нажимайте на любой листик-карточку родственника, чтобы открыть его детальный профиль, личный фотоальбом и раздел наград.</p>
         </section>
 
         <section class="section">
@@ -71,7 +82,7 @@
                         <h4>Дьяченко Надежда П.</h4><p>1906 — ...</p><span class="role-tag old-tag">Прабабушка</span>
                     </div>
                     <div class="member-card old-leaf" onclick="openProfile('Иванов Евгений Михайлович', 'Прадедушка', 'Родился 2 февраля 1911 года. Отец бабушки Тамары Евгеньевны.')">
-                        <h4>Иванов Евгений М.</h4><p>02.02.1911 — ...</p><span class="role-tag old-tag">Прадедушка</span>
+                        <h4>Иванов Евгений M.</h4><p>02.02.1911 — ...</p><span class="role-tag old-tag">Прадедушка</span>
                     </div>
                     <div class="member-card old-leaf" onclick="openProfile('Иванова (Рудь) Александра Родионовна', 'Прабабушка', 'Родилась в 1916 году. Девичья фамилия — Рудь. Мать бабушки Тамары Евгеньевны.')">
                         <h4>Иванова Александра Р.</h4><p>1916 — ...</p><span class="role-tag old-tag">Прабабушка</span>
@@ -99,7 +110,7 @@
                     <div class="member-card" onclick="openProfile('Дьяченко Валерий Анатольевич', 'Отец', 'Родился 22 декабря 1964 года. Сын Анатолия Ивановича и Тамары Евгеньевны. Ушел от нас 22 мая 2025 года.')">
                         <h4>Дьяченко Валерий А.</h4><p>22.12.1964 — 22.05.2025</p><span class="role-tag">Отец</span>
                     </div>
-                    <div class="member-card" onclick="openProfile('Дьяченко (Никонович) Ольга Андреевна', 'Мать', 'Родилась 28 июля 1964 года. Дочь Андрея Ануфриевича и Анны Яковлевны. Ушла от нас 23 декабря 2016 года.')">
+                    <div class="member-card" onclick="openProfile('Дьяченко (Никонович) Ольга Андреевна', 'Мать', 'Родилась 28 июля 1964 года. Дочь Андрея Ануфриевича и Натальи Яковлевны. Ушла от нас 23 декабря 2016 года.')">
                         <h4>Дьяченко Ольга А.</h4><p>28.07.1964 — 23.12.2016</p><span class="role-tag">Мать</span>
                     </div>
                 </div>
@@ -107,10 +118,10 @@
                 <div class="branch-title">Дети</div>
                 <div class="tree-row">
                     <div class="member-card young-leaf" onclick="openProfile('Дьяченко Александр Валерьевич', 'Брат', 'Родился 22 апреля 1988 года. Старший сын Валерия Анатольевича и Ольги Андреевны.')">
-                        <h4>Дьяченко Александр В.</h4><p>Rod. 22.04.1988</p><span class="role-tag">Брат</span>
+                        <h4>Дьяченко Александр В.</h4><p>Род. 22.04.1988</p><span class="role-tag">Брат</span>
                     </div>
                     <div class="member-card young-leaf" onclick="openProfile('Дьяченко Владимир Валерьевич', 'Я', 'Родился 9 октября 1992 года. Младший сын Валерия Анатольевича и Ольги Андреевны. Хранитель архива.')">
-                        <h4>Дьяченко Владимир В.</h4><p>Rod. 09.10.1992</p><span class="role-tag">Я (Автор)</span>
+                        <h4>Дьяченко Владимир В.</h4><p>Род. 09.10.1992</p><span class="role-tag">Я (Автор)</span>
                     </div>
                 </div>
             </div>
@@ -119,7 +130,11 @@
         <div class="modal-overlay" id="profile-modal" onclick="closeProfile(event)">
             <div class="modal-card">
                 <span class="close-modal" onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</span>
-                <div class="profile-photo-placeholder" id="modal-photo-box">📷<br>Фотография</div>
+                <div class="tabs-nav" id="modal-tabs" style="display:none;">
+                    <button class="tab-btn active" id="tab-photo" onclick="switchTab('photo')">Фотоальбом</button>
+                    <button class="tab-btn" id="tab-reward" onclick="switchTab('reward')">Награды и достижения</button>
+                </div>
+                <div class="gallery-container" id="modal-gallery-box"></div>
                 <h2 id="modal-name" style="text-align: center; color: #4A3E3D; margin-top: 0;">ФИО</h2>
                 <p id="modal-status" style="text-align: center; font-style: italic; color: #8C7B6E;">Статус</p>
                 <div id="modal-bio" style="line-height: 1.6; font-size: 15px; color: #333; text-align: justify;">Биография...</div>
@@ -127,10 +142,13 @@
         </div>
 
         <section class="section">
+            <h2>📸 Общий семейный фотоальбом</h2>
+            <div class="grid-album" id="general-album-container"></div>
+        </section>
+
+        <section class="section">
             <h2>📍 География нашей семьи</h2>
-            <ul class="geo-list">
-                <li class="geo-item">Используйте форму ниже, чтобы прислать города жизни родственников для этой ленты.</li>
-            </ul>
+            <ul class="geo-list"><li class="geo-item">Используйте форму ниже, чтобы прислать города жизни родственников для этой ленты.</li></ul>
         </section>
 
         <section class="section">
@@ -143,37 +161,120 @@
             </form>
         </section>
     </div>
-
     <script>
         const FAMILY_PASSWORD = "NashRod2026";
-        const PHOTO_ARCHIVE = {
-            'Дьяченко Валерий Анатольевич': 'https://i.ibb.co/k2kfwYWc/IMG-9693.jpg',
-            'Дьяченко (Никонович) Ольга Андреевна': 'https://i.ibb.co/7tfgQhZg/2026-10-20-155028.png',
-            'Дьяченко Анатолий Иванович': 'https://i.ibb.co/HTgf0638/2026-10-20-155356.png',
-            'Дьяченко (Иванова) Тамара Евгеньевна': 'https://i.ibb.co/sv4CnYkJ/2026-10-20-155453.png',
-            'Никонович Андрей Ануфриевич': 'https://i.ibb.co/TBSzLhxC/2026-10-20-155741.png',
-            'Никонович Анна Яковлевна': 'https://i.ibb.co/r2q2kzfM/2026-10-20-155602.png',
-            'Иванов Евгений Михайлович': 'https://i.ibb.co/pvDcnD8S/2026-10-20-160044.png',
-            'Иванова (Рудь) Александра Родионовна': 'https://i.ibb.co/7JXLHJZ0/2026-10-20-160126.png',
-            'Дьяченко (Котова) Надежда Павловна': 'https://i.ibb.co/pvGLyvQm/2026-10-20-160240.png'
+        
+        const ALBUMS = {
+            'Дьяченко Анатолий Иванович': {
+                photos: ['https://ibb.co']
+            },
+            'Дьяченко (Иванова) Тамара Евгеньевна': {
+                photos: ['https://ibb.co']
+            },
+            'Никонович Андрей Ануфриевич': {
+                photos: ['https://ibb.co']
+            },
+            'Никонович Анна Яковлевна': {
+                photos: ['https://ibb.co']
+            },
+            'Дьяченко Ольга Андреевна': {
+                photos: ['https://ibb.co'],
+                rewards: ['https://ibb.co']
+            },
+            'Дьяченко Валерий Анатольевич': {
+                photos: ['https://ibb.co'],
+                rewards: ['https://ibb.co']
+            },
+            'Дьяченко Александр Валерьевич': {
+                photos: ['https://ibb.co'],
+                rewards: ['https://ibb.co']
+            },
+            'Дьяченко Vladimir Валерьевич': {
+                photos: ['https://ibb.co'],
+                rewards: ['https://ibb.co']
+            },
+            'Дьяченко Иван Иванович': { photos: [] }, 'Дьяченко (Котова) Надежда Павловна': { photos: ['https://ibb.co'] },
+            'Иванов Евгений Михайлович': { photos: ['https://ibb.co'] }, 'Иванова (Рудь) Александра Родионовна': { photos: ['https://ibb.co'] }
         };
+        const GENERAL_ALBUM = [
+            'https://ibb.co',
+            'https://ibb.co'
+        ];
+
+        let currentActiveName = "";
+        let activeSlideIndex = 0;
+
         function checkPassword() {
-            var val = document.getElementById("password-input").value;
-            if (val === FAMILY_PASSWORD) {
+            if (document.getElementById("password-input").value === FAMILY_PASSWORD) {
                 document.getElementById("password-screen").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
+                renderGeneralAlbum();
             } else { document.getElementById("error-message").style.display = "block"; }
         }
         document.getElementById("password-input").addEventListener("keypress", function(e) { if (e.key === "Enter") checkPassword(); });
-        function openProfile(n, s, b) {
-            document.getElementById('modal-name').innerText = n;
-            document.getElementById('modal-status').innerText = s;
-            document.getElementById('modal-bio').innerText = b;
-            var box = document.getElementById('modal-photo-box');
-            if (PHOTO_ARCHIVE[n]) { box.innerHTML = '<img src="' + PHOTO_ARCHIVE[n] + '" style="width:100%; height:100%; object-fit:cover;">'; }
-            else { box.innerHTML = '📷<br>Фотография'; }
+
+        function renderGeneralAlbum() {
+            const container = document.getElementById('general-album-container');
+            container.innerHTML = GENERAL_ALBUM.map(src => `<img src="${src}" class="album-photo" onclick="viewSingleImage('${src}')">`).join('');
+        }
+
+        function viewSingleImage(src) {
+            document.getElementById('modal-tabs').style.display = 'none';
+            document.getElementById('modal-name').innerText = "Фото из архива";
+            document.getElementById('modal-status').innerText = "";
+            document.getElementById('modal-bio').innerText = "";
+            document.getElementById('modal-gallery-box').innerHTML = `<img src="${src}" style="width:100%; height:100%; object-fit:contain;">`;
             document.getElementById('profile-modal').classList.add('active');
         }
+
+        function openProfile(name, status, bio) {
+            currentActiveName = name;
+            document.getElementById('modal-name').innerText = name;
+            document.getElementById('modal-status').innerText = status;
+            document.getElementById('modal-bio').innerText = bio;
+            
+            const hasRewards = ALBUMS[name] && ALBUMS[name].rewards && ALBUMS[name].rewards.length > 0;
+            document.getElementById('modal-tabs').style.display = hasRewards ? 'flex' : 'none';
+            
+            document.getElementById('tab-photo').classList.add('active');
+            if(document.getElementById('tab-reward')) document.getElementById('tab-reward').classList.remove('active');
+            
+            buildGallery('photos');
+            document.getElementById('profile-modal').classList.add('active');
+        }
+
+        function buildGallery(type) {
+            const box = document.getElementById('modal-gallery-box');
+            const list = (ALBUMS[currentActiveName] && ALBUMS[currentActiveName][type]) ? ALBUMS[currentActiveName][type] : [];
+            
+            if (list.length === 0) {
+                box.innerHTML = `<div class="profile-photo-placeholder">📷<br>Нет фото</div>`;
+                return;
+            }
+            
+            activeSlideIndex = 0;
+            let html = list.map((src, i) => `<img src="${src}" class="gallery-slide ${i===0?'active':''}">`).join('');
+            if (list.length > 1) {
+                html += `<button class="nav-arrow prev-arrow" onclick="changeSlide(-1)">&#10094;</button>`;
+                html += `<button class="nav-arrow next-arrow" onclick="changeSlide(1)">&#10095;</button>`;
+            }
+            box.innerHTML = html;
+        }
+
+        function changeSlide(dir) {
+            const slides = document.getElementsByClassName('gallery-slide');
+            if (slides.length <= 1) return;
+            slides[activeSlideIndex].classList.remove('active');
+            activeSlideIndex = (activeSlideIndex + dir + slides.length) % slides.length;
+            slides[activeSlideIndex].classList.add('active');
+        }
+
+        function switchTab(type) {
+            document.getElementById('tab-photo').classList.toggle('active', type === 'photo');
+            document.getElementById('tab-reward').classList.toggle('active', type === 'reward');
+            buildGallery(type === 'photo' ? 'photos' : 'rewards');
+        }
+
         function closeProfile(e) { if (e.target === document.getElementById('profile-modal')) document.getElementById('profile-modal').classList.remove('active'); }
     </script>
 </body>
