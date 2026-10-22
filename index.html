@@ -86,7 +86,7 @@
                     <div class="member-card old-leaf" onclick="openProfile('Иванов Евгений Михайлович', 'Прадедушка', 'Родился 2 февраля 1911 года. Отец бабушки Тамары Евгеньевны.')">
                         <h4>Иванов Евгений M.</h4><p>02.02.1911 — ...</p><span class="role-tag old-tag">Прадедушка</span>
                     </div>
-                    <div class="member-card old-leaf" onclick="openProfile('Иванова (Рудь) Александра Родионовна', 'Прабабушка', 'Родилась в 1916 году. Девичья фамилия — Рудь. Мать бабушки Тамары Евгеньевны.')">
+                    <div class="member-card old-leaf" onclick="openProfile('Иванова (Руть) Александра Родионовна', 'Прабабушка', 'Родилась в 1916 году. Девичья фамилия — Руть. Мать бабушки Тамары Евгеньевны.')">
                         <h4>Иванова Александра Р.</h4><p>1916 — ...</p><span class="role-tag old-tag">Прабабушка</span>
                     </div>
                 </div>
@@ -167,17 +167,28 @@
     <script>
         const FAMILY_PASSWORD = "NashRod2026";
 
-        // --- ПРОКСИ ДЛЯ IMGBB ---
-        // ImgBB блокирует бесплатные горячие ссылки. Эта функция
-        // автоматически перенаправляет запросы через CDN WordPress.
+        // --- НАДЕЖНЫЙ ПРОКСИ ДЛЯ IMGBB ---
+        // Перенаправляет запросы через wsrv.nl, чтобы обойти блокировку хотлинков.
         function proxyImageUrl(src) {
             if (src.includes('i.ibb.co')) {
-                // Пример: https://i.ibb.co/XXXX/IMG.jpg  ->  https://i1.wp.com/i.ibb.co/XXXX/IMG.jpg
-                return src.replace('https://i.ibb.co/', 'https://i1.wp.com/i.ibb.co/');
+                const path = src.split('i.ibb.co/')[1];
+                return `https://wsrv.nl/?url=i.ibb.co/${path}`;
             }
             return src;
         }
-        // -------------------------
+
+        // Обложки профилей
+        const COVERS = {
+            'Дьяченко Валерий Анатольевич': 'https://i.ibb.co/k2kfwYWc/IMG-9693.jpg',
+            'Дьяченко (Никонович) Ольга Андреевна': 'https://i.ibb.co/7tfgQhZg/2026-10-20-155028.png',
+            'Дьяченко Анатолий Иванович': 'https://i.ibb.co/HTgf0638/2026-10-20-155356.png',
+            'Дьяченко (Иванова) Тамара Евгеньевна': 'https://i.ibb.co/sv4CnYkJ/2026-10-20-155453.png',
+            'Никонович Андрей Ануфриевич': 'https://i.ibb.co/TBSzLhxC/2026-10-20-155741.png',
+            'Никонович Анна Яковлевна': 'https://i.ibb.co/r2q2kzfM/2026-10-20-155602.png',
+            'Иванов Евгений Михайлович': 'https://i.ibb.co/pvDcnD8S/2026-10-20-160044.png',
+            'Иванова (Руть) Александра Родионовна': 'https://i.ibb.co/7JXLHJZ0/2026-10-20-160126.png',
+            'Дьяченко (Котова) Надежда Павловна': 'https://i.ibb.co/pvGLyvQm/2026-10-20-160240.png'
+        };
 
         const PHOTO_ALBUMS = {
             'Дьяченко Анатолий Иванович': [
@@ -377,10 +388,21 @@
 
         Object.assign(ALBUMS, PARENTS_ARCHIVE, CHILDREN_ARCHIVE);
 
+        // Инициализация пустых профилей для прадедушек/прабабушек
         ALBUMS['Дьяченко Иван Иванович'] = { photos: [], rewards: [] };
         ALBUMS['Дьяченко (Котова) Надежда Павловна'] = { photos: [], rewards: [] };
         ALBUMS['Иванов Евгений Михайлович'] = { photos: [], rewards: [] };
-        ALBUMS['Иванова (Рудь) Александра Родионовна'] = { photos: [], rewards: [] };
+        ALBUMS['Иванова (Руть) Александра Родионовна'] = { photos: [], rewards: [] };
+
+        // Автоматически добавляем обложки в начало фотоальбомов
+        Object.keys(COVERS).forEach(name => {
+            if (ALBUMS[name]) {
+                const coverUrl = COVERS[name];
+                if (!ALBUMS[name].photos.includes(coverUrl)) {
+                    ALBUMS[name].photos.unshift(coverUrl);
+                }
+            }
+        });
 
         const GENERAL_ALBUM = [
             'https://i.ibb.co/93NpLTps/IMG-9613.jpg',
