@@ -43,7 +43,7 @@
         .tab-btn { background: none; border: none; font-family: inherit; font-size: 14px; color: #8C7B6E; cursor: pointer; padding: 5px 10px; transition: all 0.2s; }
         .tab-btn.active { color: #4A3E3D; font-weight: bold; border-bottom: 2px solid #6E5F54; }
         .grid-album { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
-        .album-photo { width: 100%; height: 120px; object-fit: cover; border: 2px solid #D5CBB7; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s; cursor: pointer; }
+        .album-photo { width: 100%; height: 120px; object-fit: cover; border: 2px solid #D5CBB7; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s; cursor: pointer; background: #EFEBE4; }
         .album-photo:hover { transform: scale(1.04); border-color: #5C755E; }
         .geo-list { list-style: none; padding: 0; }
         .geo-item { padding: 10px 15px; margin-bottom: 10px; background: #FDFBF7; border-left: 4px solid #8C7B6E; border-radius: 0 4px 4px 0; }
@@ -415,7 +415,34 @@
             'https://i.ibb.co/xqrR4rFr/IMG-9757.jpg',
             'https://i.ibb.co/B2WtYnbm/IMG-9764.jpg',
             'https://i.ibb.co/NdJnGHjw/IMG-9765.jpg',
-            'https://i.ibb.co/gbZvyBzD/IMG-9766.jpg'
+            'https://i.ibb.co/gbZvyBzD/IMG-9766.jpg',
+            'https://i.ibb.co/B0DRFPV/IMG-9767.jpg',
+            'https://i.ibb.co/jvLx9900/IMG-9770.jpg',
+            'https://i.ibb.co/PsNgTDpW/IMG-9771.jpg',
+            'https://i.ibb.co/N2y2r83z/IMG-9772.jpg',
+            'https://i.ibb.co/pvbT9Lnb/IMG-9773.jpg',
+            'https://i.ibb.co/FqqNcRJc/IMG-9774.jpg',
+            'https://i.ibb.co/W4Zv4zxD/IMG-9783.jpg',
+            'https://i.ibb.co/bM0YQYQS/IMG-9784.jpg',
+            'https://i.ibb.co/jkRJHhnd/IMG-9785.jpg',
+            'https://i.ibb.co/99j6Gmtt/IMG-9789.jpg',
+            'https://i.ibb.co/d0hzZ3Nx/IMG-9796.jpg',
+            'https://i.ibb.co/9k54kMcb/IMG-9797.jpg',
+            'https://i.ibb.co/Cp81YWyk/IMG-9813.jpg',
+            'https://i.ibb.co/JjmdWZ2c/IMG-9814.jpg',
+            'https://i.ibb.co/23Rmw1gS/IMG-9836.jpg',
+            'https://i.ibb.co/gb2Fd0fR/IMG-9840.jpg',
+            'https://i.ibb.co/ccPV1pfv/IMG-9862.jpg',
+            'https://i.ibb.co/Xkrt8tHs/IMG-9865.jpg',
+            'https://i.ibb.co/GfdpQT77/IMG-9869.jpg',
+            'https://i.ibb.co/R4N3Qb1N/2026-10-21-145904.png',
+            'https://i.ibb.co/J1YtkhD/2026-10-21-145933.png',
+            'https://i.ibb.co/zW70rJvp/2026-10-21-145946.png',
+            'https://i.ibb.co/YF1pT9BP/2026-10-21-145959.png',
+            'https://i.ibb.co/7JX3HSz0/2026-10-21-150013.png',
+            'https://i.ibb.co/fVrsdwQQ/2026-10-21-150032.png',
+            'https://i.ibb.co/N2hFRK5T/2026-10-21-150040.png',
+            'https://i.ibb.co/zTfVzw3S/2026-10-21-150050.png'
         ];
 
         let currentActiveName = "";
@@ -435,9 +462,19 @@
             if (e.key === "Enter") checkPassword();
         });
 
+        // Создаёт <img> с защитой от блокировки хотлинка и заглушкой при ошибке
+        function makeImg(src, className, extraStyle, onClickAttr) {
+            return `<img src="${src}" class="${className}" style="${extraStyle || ''}"
+                referrerpolicy="no-referrer" loading="lazy"
+                onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22260%22%3E%3Crect%20width%3D%22300%22%20height%3D%22260%22%20fill%3D%22%23EFEBE4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%238C7B6E%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%D0%A4%D0%BE%D1%82%D0%BE%20%D0%BD%D0%B5%D0%B4%D0%BE%D1%81%D1%82%D1%83%D0%BF%D0%BD%D0%BE%3C%2Ftext%3E%3C%2Fsvg%3E'"
+                ${onClickAttr || ''}>`;
+        }
+
         function renderGeneralAlbum() {
             const container = document.getElementById('general-album-container');
-            container.innerHTML = GENERAL_ALBUM.map(src => `<img src="${src}" class="album-photo" onclick="viewSingleImage('${src}')">`).join('');
+            container.innerHTML = GENERAL_ALBUM
+                .map(src => makeImg(src, 'album-photo', '', `onclick="viewSingleImage('${src}')"`))
+                .join('');
         }
 
         function viewSingleImage(src) {
@@ -445,7 +482,8 @@
             document.getElementById('modal-name').innerText = "Фото из архива";
             document.getElementById('modal-status').innerText = "";
             document.getElementById('modal-bio').innerText = "";
-            document.getElementById('modal-gallery-box').innerHTML = `<img src="${src}" style="width:100%; height:100%; object-fit:contain;">`;
+            document.getElementById('modal-gallery-box').innerHTML =
+                makeImg(src, '', 'width:100%;height:100%;object-fit:contain;');
             document.getElementById('profile-modal').classList.add('active');
         }
 
@@ -479,7 +517,9 @@
             }
 
             activeSlideIndex = 0;
-            let html = list.map((src, i) => `<img src="${src}" class="gallery-slide ${i === 0 ? 'active' : ''}">`).join('');
+            let html = list
+                .map((src, i) => makeImg(src, `gallery-slide ${i === 0 ? 'active' : ''}`, ''))
+                .join('');
 
             if (list.length > 1) {
                 html += `<button class="nav-arrow prev-arrow" onclick="changeSlide(-1)">&#10094;</button>`;
