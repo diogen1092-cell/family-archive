@@ -18,10 +18,11 @@
         .section { background: #FDFBF7; padding: 35px; margin-bottom: 35px; border-radius: 8px; border: 1px solid #DED7C9; box-shadow: 0 4px 15px rgba(74,62,61,0.04); }
         .tree { display: flex; flex-direction: column; align-items: center; overflow-x: auto; padding: 40px 20px; background: #FFFDF9; border: 2px solid #D5CBB7; border-radius: 12px; }
         .tree-row { display: flex; justify-content: center; width: 100%; margin-bottom: 50px; flex-wrap: nowrap; }
-        .member-card { background: #FAF6EE; border: 2px solid #5C755E; padding: 15px 10px; border-radius: 25px 5px 25px 5px; text-align: center; box-shadow: 0 4px 10px rgba(92,117,94,0.12); margin: 5px 10px; min-width: 210px; cursor: pointer; transition: all 0.3s ease; }
+        .member-card { background: #FAF6EE; border: 2px solid #5C755E; padding: 15px 10px; border-radius: 25px 5px 25px 5px; text-align: center; box-shadow: 0 4px 10px rgba(92,117,94,0.12); margin: 5px 10px; min-width: 210px; cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; }
         .member-card:hover { transform: scale(1.06) rotate(1deg); background: #EBF2EC; }
-        .member-card h4 { margin: 0 0 5px 0; color: #354236; font-size: 14px; }
+        .member-card h4 { margin: 10px 0 5px 0; color: #354236; font-size: 14px; }
         .member-card p { margin: 0; font-size: 11px; color: #6E5F54; }
+        .card-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #D5CBB7; background: #EFEBE4; }
         .old-leaf { border-color: #8B5A2B; background: #FDF8F2; }
         .young-leaf { border-color: #6B8E23; background: #F4F9EC; border-radius: 5px 25px 5px 25px; }
         .role-tag { font-size: 9px; background: rgba(92,117,94,0.1); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-top: 6px; color: #4A5E4C; text-transform: uppercase; font-weight: bold; }
@@ -34,10 +35,12 @@
         .close-modal { position: absolute; top: 10px; right: 20px; font-size: 32px; cursor: pointer; color: #8C7B6E; font-weight: bold; z-index: 20; transition: color 0.2s; }
         .close-modal:hover { color: #A94442; }
         .modal-content-split { display: flex; flex-direction: row; height: 100%; width: 100%; }
+        
         .modal-gallery-side { flex: 6; display: flex; flex-direction: column; background: #EFEBE4; padding: 20px; border-right: 2px solid #DED7C9; }
         .tabs-nav { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #C4BCAF; padding-bottom: 5px; flex-shrink: 0; }
         .tab-btn { background: none; border: none; font-family: inherit; font-size: 16px; color: #6E5F54; cursor: pointer; padding: 10px 15px; transition: all 0.2s; border-radius: 6px 6px 0 0; font-weight: bold; }
         .tab-btn.active { background: #FDFBF7; color: #4A3E3D; border: 1px solid #C4BCAF; border-bottom: none; margin-bottom: -1px; }
+        
         .gallery-container { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 8px; background: #E5DFD3; }
         .gallery-slide { width: 100%; height: 100%; object-fit: contain; display: none; }
         .gallery-slide.active { display: block; }
@@ -45,19 +48,26 @@
         .nav-arrow:hover { background: rgba(74,62,61,1); }
         .prev-arrow { left: 15px; }
         .next-arrow { right: 15px; }
+        .delete-photo-btn { position: absolute; top: 15px; right: 15px; background: rgba(169, 68, 66, 0.8); color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-size: 14px; z-index: 10; transition: background 0.2s; }
+        .delete-photo-btn:hover { background: rgba(169, 68, 66, 1); }
         .profile-photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8C7B6E; font-size: 18px; }
         
-        .modal-info-side { flex: 4; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; }
-        .modal-name { text-align: left; color: #4A3E3D; margin-top: 0; font-size: 2em; border-bottom: 2px solid #D5CBB7; padding-bottom: 10px; }
-        .modal-status { text-align: left; font-style: italic; color: #8C7B6E; margin-top: -10px; font-size: 1.2em; margin-bottom: 25px; }
+        .modal-info-side { flex: 4; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; }
+        .profile-cover-container { text-align: center; margin-bottom: 20px; }
+        .profile-cover { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 4px solid #B5A896; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #EFEBE4; }
+        .change-cover-btn { display: inline-block; margin-top: 10px; background: #EBF2EC; color: #354236; border: 1px solid #5C755E; padding: 5px 10px; border-radius: 4px; font-size: 12px; cursor: pointer; }
+        
+        .modal-name { text-align: center; color: #4A3E3D; margin-top: 0; font-size: 1.8em; border-bottom: 2px solid #D5CBB7; padding-bottom: 10px; }
+        .modal-status { text-align: center; font-style: italic; color: #8C7B6E; margin-top: -10px; font-size: 1.1em; margin-bottom: 25px; }
         .modal-bio { line-height: 1.7; font-size: 16px; color: #333; text-align: justify; margin-bottom: 30px; }
-        .historical-note { background: #F4EFE3; border-left: 5px solid #8B5A2B; padding: 20px; border-radius: 0 8px 8px 0; margin-top: auto; }
-        .historical-note h3 { margin-top: 0; color: #8B5A2B; font-size: 1.2em; }
-        .historical-note p { margin-bottom: 0; color: #5C4F45; font-style: italic; line-height: 1.5; }
+        
+        .historical-note { background: #F4EFE3; border-left: 5px solid #8B5A2B; padding: 15px; border-radius: 0 8px 8px 0; margin-top: auto; }
+        .historical-note h3 { margin-top: 0; color: #8B5A2B; font-size: 1.1em; }
+        .historical-note p { margin-bottom: 0; color: #5C4F45; font-style: italic; line-height: 1.5; font-size: 14px; }
 
         @media (max-width: 900px) {
             .modal-content-split { flex-direction: column; }
-            .modal-gallery-side { border-right: none; border-bottom: 2px solid #DED7C9; flex: 1; min-height: 400px; }
+            .modal-gallery-side { border-right: none; border-bottom: 2px solid #DED7C9; flex: 1; min-height: 300px; }
             .modal-info-side { flex: 1; padding: 20px; }
             .modal-name { font-size: 1.5em; }
         }
@@ -65,10 +75,11 @@
         .grid-album { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 20px; }
         .album-photo { width: 100%; height: 120px; object-fit: cover; border: 2px solid #D5CBB7; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.2s; cursor: pointer; background: #EFEBE4; }
         .album-photo:hover { transform: scale(1.04); border-color: #5C755E; }
-        .geo-list { list-style: none; padding: 0; }
-        .geo-item { padding: 10px 15px; margin-bottom: 10px; background: #FDFBF7; border-left: 4px solid #8C7B6E; border-radius: 0 4px 4px 0; }
         
         .upload-box { background: #EBF2EC; padding: 20px; border-radius: 8px; border: 2px dashed #6B8E23; margin-top: 20px; text-align: center; }
+        .upload-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; align-items: center; }
+        .upload-row select, .upload-row input { margin: 0; width: auto; flex: 1; min-width: 200px; }
+        .inline-upload-btn { background: #5C755E; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -89,27 +100,38 @@
             <button class="action-btn" onclick="window.print()">🖨️ Сохранить в PDF / Печать</button>
         </header>
 
-        <!-- СЕКЦИЯ ДОБАВЛЕНИЯ ФОТО -->
+        <!-- ПАНЕЛЬ ЗАГРУЗКИ -->
         <section class="section">
-            <h2>➕ Добавить фотографии</h2>
-            <p>Вы можете загрузить фотографии прямо со своего компьютера. Они сохранятся в памяти вашего браузера.</p>
+            <h2>➕ Добавить материалы в архив</h2>
+            <p>Загружайте фотографии прямо со своего компьютера. Выберите, куда именно попадет фото.</p>
             <div class="upload-box">
-                <select id="upload-target">
-                    <option value="general">Общий семейный альбом</option>
-                    <option value="Дьяченко Валерий Анатольевич">Дьяченко Валерий Анатольевич</option>
-                    <option value="Дьяченко (Никонович) Ольга Андреевна">Дьяченко (Никонович) Ольга Андреевна</option>
-                    <option value="Дьяченко Анатолий Иванович">Дьяченко Анатолий Иванович</option>
-                    <option value="Дьяченко (Иванова) Тамара Евгеньевна">Дьяченко (Иванова) Тамара Евгеньевна</option>
-                    <option value="Никонович Андрей Ануфриевич">Никонович Андрей Ануфриевич</option>
-                    <option value="Никонович Анна Яковлевна">Никонович Анна Яковлевна</option>
-                    <option value="Дьяченко Александр Валерьевич">Дьяченко Александр Валерьевич</option>
-                    <option value="Дьяченко Владимир Валерьевич">Дьяченко Владимир Валерьевич</option>
-                    <option value="Иванов Евгений Михайлович">Иванов Евгений Михайлович</option>
-                    <option value="Иванова (Руть) Александра Родионовна">Иванова (Руть) Александра Родионовна</option>
-                    <option value="Дьяченко (Котова) Надежда Павловна">Дьяченко (Котова) Надежда Павловна</option>
-                </select>
-                <input type="file" id="upload-file" accept="image/*" multiple style="background: white; border: 1px solid #B5A896; padding: 10px;">
-                <button class="action-btn" onclick="handleUpload()">Загрузить в архив</button>
+                <div class="upload-row">
+                    <select id="upload-target">
+                        <option value="general">Общий семейный альбом</option>
+                        <option value="Дьяченко Валерий Анатольевич">Дьяченко Валерий Анатольевич (Отец)</option>
+                        <option value="Дьяченко (Никонович) Ольга Андреевна">Дьяченко (Никонович) Ольга Андреевна (Мать)</option>
+                        <option value="Дьяченко Анатолий Иванович">Дьяченко Анатолий Иванович (Дедушка)</option>
+                        <option value="Дьяченко (Иванова) Тамара Евгеньевна">Дьяченко (Иванова) Тамара Евгеньевна (Бабушка)</option>
+                        <option value="Никонович Андрей Ануфриевич">Никонович Андрей Ануфриевич (Дедушка)</option>
+                        <option value="Никонович Анна Яковлевна">Никонович Анна Яковлевна (Бабушка)</option>
+                        <option value="Дьяченко Александр Валерьевич">Дьяченко Александр Валерьевич (Брат)</option>
+                        <option value="Дьяченко Владимир Валерьевич">Дьяченко Владимир Валерьевич (Автор)</option>
+                        <option value="Иванов Евгений Михайлович">Иванов Евгений Михайлович (Прадедушка)</option>
+                        <option value="Иванова (Руть) Александра Родионовна">Иванова (Руть) Александра Родионовна (Прабабушка)</option>
+                        <option value="Дьяченко (Котова) Надежда Павловна">Дьяченко (Котова) Надежда Павловна (Прабабушка)</option>
+                    </select>
+                    
+                    <select id="upload-type">
+                        <option value="photo">📸 Фотоальбом</option>
+                        <option value="reward">🏆 Награды и достижения</option>
+                        <option value="cover">🖼️ Обложка профиля (Аватар)</option>
+                    </select>
+                </div>
+                
+                <div class="upload-row" style="margin-top: 10px;">
+                    <input type="file" id="upload-file" accept="image/*" multiple style="background: white; border: 1px solid #B5A896; padding: 10px;">
+                    <button class="action-btn" onclick="handleUpload()">Загрузить</button>
+                </div>
                 <p id="upload-status" style="margin-top: 15px; font-weight: bold; color: #5C755E;"></p>
             </div>
         </section>
@@ -120,15 +142,19 @@
                 <div class="branch-title">Старшие предки (Прадедушки и Прабабушки)</div>
                 <div class="tree-row">
                     <div class="member-card old-leaf" onclick="openProfile('Дьяченко Иван Иванович', 'Прадедушка', 'Родился 5 февраля 1906 года. Отец дедушки Анатолия Ивановича.')">
+                        <img class="card-avatar" id="avatar-Дьяченко Иван Иванович" src="" alt="Нет фото">
                         <h4>Дьяченко Иван И.</h4><p>05.02.1906 — ...</p><span class="role-tag old-tag">Прадедушка</span>
                     </div>
                     <div class="member-card old-leaf" onclick="openProfile('Дьяченко (Котова) Надежда Павловна', 'Прабабушка', 'Родилась в 1906 году. Девичья фамилия — Котова. Мать дедушки Анатолия Ивановича.')">
+                        <img class="card-avatar" id="avatar-Дьяченко (Котова) Надежда Павловна" src="" alt="Нет фото">
                         <h4>Дьяченко Надежда П.</h4><p>1906 — ...</p><span class="role-tag old-tag">Прабабушка</span>
                     </div>
                     <div class="member-card old-leaf" onclick="openProfile('Иванов Евгений Михайлович', 'Прадедушка', 'Родился 2 февраля 1911 года. Отец бабушки Тамары Евгеньевны.')">
+                        <img class="card-avatar" id="avatar-Иванов Евгений Михайлович" src="" alt="Нет фото">
                         <h4>Иванов Евгений M.</h4><p>02.02.1911 — ...</p><span class="role-tag old-tag">Прадедушка</span>
                     </div>
                     <div class="member-card old-leaf" onclick="openProfile('Иванова (Руть) Александра Родионовна', 'Прабабушка', 'Родилась в 1916 году. Девичья фамилия — Руть. Мать бабушки Тамары Евгеньевны.')">
+                        <img class="card-avatar" id="avatar-Иванова (Руть) Александра Родионовна" src="" alt="Нет фото">
                         <h4>Иванова Александра Р.</h4><p>1916 — ...</p><span class="role-tag old-tag">Прабабушка</span>
                     </div>
                 </div>
@@ -136,15 +162,19 @@
                 <div class="branch-title">Поколение дедушек и бабушек</div>
                 <div class="tree-row">
                     <div class="member-card" onclick="openProfile('Дьяченко Анатолий Иванович', 'Дедушка', 'Родился 18 июня 1932 года. Глава семьи Дьяченко. Ушел от нас в День Победы, 9 мая 2019 года.')">
+                        <img class="card-avatar" id="avatar-Дьяченко Анатолий Иванович" src="" alt="Нет фото">
                         <h4>Дьяченко Анатолий И.</h4><p>18.06.1932 — 09.05.2019</p><span class="role-tag">Дедушка</span>
                     </div>
                     <div class="member-card" onclick="openProfile('Дьяченко (Иванова) Тамара Евгеньевна', 'Бабушка', 'Родилась 12 декабря 1939 года. Девичья фамилия — Иванова. Покинула этот мир 12 июля 2024 года.')">
+                        <img class="card-avatar" id="avatar-Дьяченко (Иванова) Тамара Евгеньевна" src="" alt="Нет фото">
                         <h4>Дьяченко Тамара Е.</h4><p>12.12.1939 — 12.07.2024</p><span class="role-tag">Бабушка</span>
                     </div>
                     <div class="member-card" onclick="openProfile('Никонович Андрей Ануфриевич', 'Дедушка', 'Родился 5 сентября 1927 года. Опора материнской линии рода. Ушел от нас 11 июня 2006 года.')">
+                        <img class="card-avatar" id="avatar-Никонович Андрей Ануфриевич" src="" alt="Нет фото">
                         <h4>Никонович Андрей А.</h4><p>05.09.1927 — 11.06.2006</p><span class="role-tag">Дедушка</span>
                     </div>
                     <div class="member-card" onclick="openProfile('Никонович Анна Яковлевна', 'Бабушка', 'Родилась 4 февраля 1922 года. Хранительница тепла материнской линии. Ушла от нас 11 июля 2001 года.')">
+                        <img class="card-avatar" id="avatar-Никонович Анна Яковлевна" src="" alt="Нет фото">
                         <h4>Никонович Анна Я.</h4><p>04.02.1922 — 11.07.2001</p><span class="role-tag">Бабушка</span>
                     </div>
                 </div>
@@ -152,9 +182,11 @@
                 <div class="branch-title">Родители</div>
                 <div class="tree-row">
                     <div class="member-card" onclick="openProfile('Дьяченко Валерий Анатольевич', 'Отец', 'Родился 22 декабря 1964 года. Сын Анатолия Ивановича и Тамары Евгеньевны. Ушел от нас 22 мая 2025 года.')">
+                        <img class="card-avatar" id="avatar-Дьяченко Валерий Анатольевич" src="" alt="Нет фото">
                         <h4>Дьяченко Валерий А.</h4><p>22.12.1964 — 22.05.2025</p><span class="role-tag">Отец</span>
                     </div>
                     <div class="member-card" onclick="openProfile('Дьяченко (Никонович) Ольга Андреевна', 'Мать', 'Родилась 28 июля 1964 года. Дочь Андрея Ануфриевича и Анны Яковлевны. Ушла от нас 23 декабря 2016 года.')">
+                        <img class="card-avatar" id="avatar-Дьяченко (Никонович) Ольга Андреевна" src="" alt="Нет фото">
                         <h4>Дьяченко Ольга А.</h4><p>28.07.1964 — 23.12.2016</p><span class="role-tag">Мать</span>
                     </div>
                 </div>
@@ -162,9 +194,11 @@
                 <div class="branch-title">Дети</div>
                 <div class="tree-row">
                     <div class="member-card young-leaf" onclick="openProfile('Дьяченко Александр Валерьевич', 'Брат', 'Родился 22 апреля 1988 года. Старший сын Валерия Анатольевича и Ольги Андреевны.')">
+                        <img class="card-avatar" id="avatar-Дьяченко Александр Валерьевич" src="" alt="Нет фото">
                         <h4>Дьяченко Александр В.</h4><p>Род. 22.04.1988</p><span class="role-tag">Брат</span>
                     </div>
                     <div class="member-card young-leaf" onclick="openProfile('Дьяченко Владимир Валерьевич', 'Я', 'Родился 9 октября 1992 года. Младший сын Валерия Анатольевича и Ольги Андреевны. Хранитель архива.')">
+                        <img class="card-avatar" id="avatar-Дьяченко Владимир Валерьевич" src="" alt="Нет фото">
                         <h4>Дьяченко Владимир В.</h4><p>Род. 09.10.1992</p><span class="role-tag">Я (Автор)</span>
                     </div>
                 </div>
@@ -176,19 +210,35 @@
                 <span class="close-modal" onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</span>
                 <div class="modal-content-split">
                     <div class="modal-gallery-side">
-                        <div class="tabs-nav" id="modal-tabs" style="display:none;">
+                        <div class="tabs-nav" id="modal-tabs">
                             <button class="tab-btn active" id="tab-photo" onclick="switchTab('photo')">📸 Фотоальбом</button>
                             <button class="tab-btn" id="tab-reward" onclick="switchTab('reward')">🏆 Награды</button>
                         </div>
                         <div class="gallery-container" id="modal-gallery-box"></div>
+                        <!-- Быстрая загрузка внутри карточки -->
+                        <div style="text-align: center; padding-top: 10px;">
+                            <label class="inline-upload-btn" style="cursor: pointer;">
+                                ➕ Загрузить фото в текущий альбом
+                                <input type="file" id="inline-upload-file" accept="image/*" multiple style="display: none;" onchange="handleInlineUpload()">
+                            </label>
+                        </div>
                     </div>
                     <div class="modal-info-side">
+                        <div class="profile-cover-container">
+                            <img id="modal-cover-img" class="profile-cover" src="" alt="Обложка">
+                            <br>
+                            <label class="change-cover-btn">
+                                📷 Сменить обложку
+                                <input type="file" id="cover-upload-file" accept="image/*" style="display: none;" onchange="handleCoverUpload()">
+                            </label>
+                        </div>
                         <h2 id="modal-name" class="modal-name">ФИО</h2>
                         <p id="modal-status" class="modal-status">Статус</p>
                         <div id="modal-bio" class="modal-bio">Биография...</div>
+                        
                         <div class="historical-note">
                             <h3>📜 Историческая справка</h3>
-                            <p>(Здесь можно будет добавить более подробную историческую информацию)</p>
+                            <p id="modal-history">(Здесь можно будет добавить более подробную историческую информацию)</p>
                         </div>
                     </div>
                 </div>
@@ -219,46 +269,70 @@
     <script>
         const FAMILY_PASSWORD = "NashRod2026";
 
-        // --- БАЗА ДАННЫХ (IndexedDB) ДЛЯ ЛОКАЛЬНЫХ ФОТО ---
+        // --- БАЗА ДАННЫХ (IndexedDB) ---
         let db;
-        const dbRequest = indexedDB.open("FamilyArchiveDB", 1);
+        const dbRequest = indexedDB.open("FamilyArchiveDB", 2); // Обновили версию БД
         dbRequest.onupgradeneeded = (e) => {
             db = e.target.result;
-            if (!db.objectStoreNames.contains('photos')) {
-                db.createObjectStore('photos', { keyPath: 'id', autoIncrement: true });
+            if (db.objectStoreNames.contains('photos')) {
+                db.deleteObjectStore('photos'); // Удаляем старую версию без разделения
             }
+            db.createObjectStore('media', { keyPath: 'id', autoIncrement: true });
         };
-        dbRequest.onsuccess = (e) => { db = e.target.result; };
+        dbRequest.onsuccess = (e) => { 
+            db = e.target.result; 
+            initApp(); // Запускаем после инициализации БД
+        };
 
-        function savePhotoToDB(memberName, dataUrl) {
+        function saveMedia(memberName, type, dataUrl) {
             return new Promise((resolve, reject) => {
-                if (!db) return reject("DB not initialized");
-                const tx = db.transaction('photos', 'readwrite');
-                const store = tx.objectStore('photos');
-                store.add({ memberName, dataUrl });
+                const tx = db.transaction('media', 'readwrite');
+                const store = tx.objectStore('media');
+                
+                // Если это обложка, сначала удаляем старую обложку этого человека
+                if (type === 'cover') {
+                    const req = store.getAll();
+                    req.onsuccess = () => {
+                        req.result.forEach(item => {
+                            if (item.memberName === memberName && item.type === 'cover') {
+                                store.delete(item.id);
+                            }
+                        });
+                        store.add({ memberName, type, dataUrl });
+                    };
+                } else {
+                    store.add({ memberName, type, dataUrl });
+                }
+                
                 tx.oncomplete = () => resolve();
                 tx.onerror = () => reject(tx.error);
             });
         }
 
-        function getPhotosFromDB(memberName) {
+        function getMedia(memberName, type) {
             return new Promise((resolve, reject) => {
-                if (!db) return resolve([]);
-                const tx = db.transaction('photos', 'readonly');
-                const store = tx.objectStore('photos');
+                const tx = db.transaction('media', 'readonly');
+                const store = tx.objectStore('media');
                 const request = store.getAll();
                 request.onsuccess = () => {
-                    if (memberName) {
-                        resolve(request.result.filter(p => p.memberName === memberName).map(p => p.dataUrl));
-                    } else {
-                        resolve(request.result.map(p => p.dataUrl));
-                    }
+                    const filtered = request.result.filter(p => p.memberName === memberName && p.type === type);
+                    resolve(filtered);
                 };
                 request.onerror = () => reject(request.error);
             });
         }
 
-        // Сжатие изображения перед сохранением, чтобы не забить память браузера
+        function deleteMedia(id) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('media', 'readwrite');
+                const store = tx.objectStore('media');
+                store.delete(id);
+                tx.oncomplete = () => resolve();
+                tx.onerror = () => reject(tx.error);
+            });
+        }
+
+        // --- ОБРАБОТКА ИЗОБРАЖЕНИЙ ---
         function resizeImage(file, maxWidth = 1000, maxHeight = 1000) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -285,9 +359,10 @@
             });
         }
 
-        // --- ЗАГРУЗКА ФОТО ИЗ ФОРМЫ ---
+        // --- ЗАГРУЗКА ИЗ ОСНОВНОЙ ФОРМЫ ---
         async function handleUpload() {
             const target = document.getElementById('upload-target').value;
+            const type = document.getElementById('upload-type').value;
             const files = document.getElementById('upload-file').files;
             const status = document.getElementById('upload-status');
 
@@ -297,214 +372,116 @@
                 return;
             }
 
-            status.innerText = "Загрузка и обработка фото...";
+            if (type === 'cover' && files.length > 1) {
+                status.innerText = "Для обложки выбирайте только один файл.";
+                status.style.color = "#A94442";
+                return;
+            }
+
+            status.innerText = "Загрузка...";
             status.style.color = "#6E5F54";
 
-            let uploadedCount = 0;
             for (let i = 0; i < files.length; i++) {
                 try {
-                    const base64 = await resizeImage(files[i]);
-                    await savePhotoToDB(target, base64);
-                    uploadedCount++;
+                    const base64 = await resizeImage(files[i], type === 'cover' ? 500 : 1000); // Обложку сжимаем сильнее
+                    await saveMedia(target, type, base64);
                 } catch (err) {
-                    console.error("Ошибка загрузки фото:", err);
+                    console.error("Ошибка:", err);
                 }
             }
 
-            status.innerText = `Успешно загружено ${uploadedCount} фото в "${target === 'general' ? 'Общий альбом' : target}"!`;
+            status.innerText = `Успешно загружено!`;
             status.style.color = "#5C755E";
-            document.getElementById('upload-file').value = ""; // Очищаем инпут
-
-            // Обновляем альбомы
-            renderGeneralAlbum();
+            document.getElementById('upload-file').value = "";
+            
+            // Обновляем весь интерфейс
+            await refreshAllViews();
         }
 
-        // --- ОТОБРАЖЕНИЕ ДАННЫХ ---
-        const COVERS = {
-            'Дьяченко Валерий Анатольевич': 'https://i.ibb.co/k2kfwYWc/IMG-9693.jpg',
-            'Дьяченко (Никонович) Ольга Андреевна': 'https://i.ibb.co/7tfgQhZg/2026-10-20-155028.png',
-            'Дьяченко Анатолий Иванович': 'https://i.ibb.co/HTgf0638/2026-10-20-155356.png',
-            'Дьяченко (Иванова) Тамара Евгеньевна': 'https://i.ibb.co/sv4CnYkJ/2026-10-20-155453.png',
-            'Никонович Андрей Ануфриевич': 'https://i.ibb.co/TBSzLhxC/2026-10-20-155741.png',
-            'Никонович Анна Яковлевна': 'https://i.ibb.co/r2q2kzfM/2026-10-20-155602.png',
-            'Иванов Евгений Михайлович': 'https://i.ibb.co/pvDcnD8S/2026-10-20-160044.png',
-            'Иванова (Руть) Александра Родионовна': 'https://i.ibb.co/7JXLHJZ0/2026-10-20-160126.png',
-            'Дьяченко (Котова) Надежда Павловна': 'https://i.ibb.co/pvGLyvQm/2026-10-20-160240.png'
-        };
-
-        const PHOTO_ALBUMS = {
-            'Дьяченко Анатолий Иванович': [
-                'https://i.ibb.co/Z6b1Lgb7/IMG-9833.jpg', 'https://i.ibb.co/60gvLLnd/IMG-9837.jpg', 'https://i.ibb.co/842QknDK/IMG-9838.jpg',
-                'https://i.ibb.co/4gCd51Rt/IMG-9841.jpg', 'https://i.ibb.co/CsWN3xbT/IMG-9846.jpg', 'https://i.ibb.co/1fSG9Cg0/IMG-9847.jpg',
-                'https://i.ibb.co/xK3txmS7/IMG-9848.jpg', 'https://i.ibb.co/B5n2yFmX/IMG-9854.jpg', 'https://i.ibb.co/d0B3Ntm2/IMG-9855.jpg',
-                'https://i.ibb.co/RG4CNR8F/IMG-9858.jpg', 'https://i.ibb.co/ZzDcB2zt/IMG-9859.jpg'
-            ],
-            'Дьяченко (Иванова) Тамара Евгеньевна': [
-                'https://i.ibb.co/Xrv6v1QZ/IMG-9832.jpg', 'https://i.ibb.co/3Yr0W8Sk/IMG-9834.jpg', 'https://i.ibb.co/Q1vf3DP/IMG-9849.jpg',
-                'https://i.ibb.co/W4GsNmpD/IMG-9850.jpg', 'https://i.ibb.co/cSWB4Pg4/IMG-9851.jpg', 'https://i.ibb.co/5grvgxLj/IMG-9853.jpg',
-                'https://i.ibb.co/VYLW0Czd/IMG-9857.jpg'
-            ],
-            'Никонович Андрей Ануфриевич': [
-                'https://i.ibb.co/DPF3WM77/IMG-9623.jpg', 'https://i.ibb.co/p9BjkyY/IMG-9697.jpg', 'https://i.ibb.co/xKvK8NWb/IMG-9761.jpg',
-                'https://i.ibb.co/9HbMmgXD/IMG-9763.jpg', 'https://i.ibb.co/twjcT63q/IMG-9781.jpg', 'https://i.ibb.co/zhb4WJ00/IMG-9782.jpg',
-                'https://i.ibb.co/7tKmGyHC/IMG-9790.jpg', 'https://i.ibb.co/6J7GnDMN/IMG-9794.jpg', 'https://i.ibb.co/HDMV9ssL/IMG-9800.jpg',
-                'https://i.ibb.co/jZ1CVhS7/IMG-9803.jpg', 'https://i.ibb.co/FkTqRHQC/IMG-9804.jpg', 'https://i.ibb.co/237JzMxj/IMG-9805.jpg',
-                'https://i.ibb.co/5XRn5Gw4/IMG-9806.jpg', 'https://i.ibb.co/7t931FvV/IMG-9807.jpg', 'https://i.ibb.co/21VKcrzC/IMG-9809.jpg'
-            ],
-            'Никонович Анна Яковлевна': [
-                'https://i.ibb.co/ccRTNSfx/IMG-9644.jpg', 'https://i.ibb.co/S7WBNKPr/image.jpg', 'https://i.ibb.co/MkRPtgYp/image.jpg',
-                'https://i.ibb.co/hJW7vNqK/image.jpg', 'https://i.ibb.co/NgPB84BK/image.jpg', 'https://i.ibb.co/7tC86FZZ/image.jpg',
-                'https://i.ibb.co/WNBd4QH3/image.jpg', 'https://i.ibb.co/3mTF146w/image.jpg', 'https://i.ibb.co/sDm43yt/image.jpg',
-                'https://i.ibb.co/VYLkG2vY/image.jpg', 'https://i.ibb.co/cc6VCD02/image.jpg', 'https://i.ibb.co/SXMcjYds/image.jpg',
-                'https://i.ibb.co/hxY2Jp1N/IMG-9811.jpg'
-            ]
-        };
-
-        const PARENTS_ARCHIVE = {
-            'Дьяченко (Никонович) Ольга Андреевна': {
-                photos: [
-                    'https://i.ibb.co/M5QFnTm8/IMG-9641.jpg', 'https://i.ibb.co/WpWbLLsr/IMG-9648.jpg', 'https://i.ibb.co/fPH3s8h/IMG-9658.jpg',
-                    'https://i.ibb.co/HTXcHFG2/IMG-9663.jpg', 'https://i.ibb.co/pcyKSqL/IMG-9665.jpg', 'https://i.ibb.co/5WkyXqg6/IMG-9666.jpg',
-                    'https://i.ibb.co/CKCXbWT1/IMG-9675.jpg', 'https://i.ibb.co/0kL3yNy/IMG-9682.jpg', 'https://i.ibb.co/Wv8XM4fF/IMG-9722.jpg',
-                    'https://i.ibb.co/rCQYtx3/IMG-9727.jpg', 'https://i.ibb.co/2195Gh2g/IMG-9728.jpg', 'https://i.ibb.co/Fk9NbHcH/IMG-9732.jpg',
-                    'https://i.ibb.co/JjVr2fXx/IMG-9741.jpg', 'https://i.ibb.co/3mWYsrDd/IMG-9768.jpg', 'https://i.ibb.co/NdH65qQG/IMG-9769.jpg',
-                    'https://i.ibb.co/5WtgxqGJ/IMG-9779.jpg', 'https://i.ibb.co/4nYyVKFK/IMG-9780.jpg', 'https://i.ibb.co/jPXLxdg0/IMG-9799.png',
-                    'https://i.ibb.co/Mv8Lv61/IMG-97991.jpg', 'https://i.ibb.co/MLm5yWf/IMG-98022.jpg', 'https://i.ibb.co/VpLZ23bC/IMG-9730.jpg'
-                ],
-                rewards: [
-                    'https://i.ibb.co/Qt3jt12/IMG-9695.jpg', 'https://i.ibb.co/s9dB8GGJ/IMG-9702.jpg',
-                    'https://i.ibb.co/LzzVf7yd/IMG-9705.jpg', 'https://i.ibb.co/TBC20bRS/IMG-9713.jpg'
-                ]
-            },
-            'Дьяченко Валерий Анатольевич': {
-                photos: [
-                    'https://i.ibb.co/m5xHNnF2/IMG-9625.jpg', 'https://i.ibb.co/1Gsjvj9L/IMG-9626.jpg', 'https://i.ibb.co/G4xcrRkG/IMG-9630.jpg',
-                    'https://i.ibb.co/67QjHxH4/IMG-9639.jpg', 'https://i.ibb.co/Fk4fMLxS/IMG-9642.jpg', 'https://i.ibb.co/wFkScMK2/IMG-9657.jpg',
-                    'https://i.ibb.co/kg5ppsF7/IMG-9667.jpg', 'https://i.ibb.co/3Yj9jrZF/IMG-9668.jpg', 'https://i.ibb.co/Qvnr2RPT/IMG-9677.jpg',
-                    'https://i.ibb.co/Mkkdc25H/IMG-9693.jpg', 'https://i.ibb.co/Y7GwL64B/IMG-9723.jpg', 'https://i.ibb.co/G38R9053/IMG-9735.jpg',
-                    'https://i.ibb.co/m5ryvTy5/IMG-9737.jpg', 'https://i.ibb.co/cXF9dFMv/IMG-9738.jpg', 'https://i.ibb.co/R4dMjzhq/IMG-9749.jpg',
-                    'https://i.ibb.co/gM1CzxBd/IMG-9750.jpg', 'https://i.ibb.co/hR2hqw5J/IMG-9751.jpg', 'https://i.ibb.co/934p6B52/IMG-9842.jpg',
-                    'https://i.ibb.co/xSJYk8bF/photo-5388885364988125078-y.jpg', 'https://i.ibb.co/pvJZVqGw/2026-10-21-145406.png'
-                ],
-                rewards: [
-                    'https://i.ibb.co/39SnvmsL/IMG-9691.jpg', 'https://i.ibb.co/R8rKm16/IMG-9692.jpg', 'https://i.ibb.co/sJ6vbG2P/IMG-9694.jpg',
-                    'https://i.ibb.co/sv643sgY/IMG-9696.jpg', 'https://i.ibb.co/zHfG9vFd/IMG-9701.jpg', 'https://i.ibb.co/hxvsv8C7/IMG-9703.jpg',
-                    'https://i.ibb.co/nNffngz4/IMG-9713.jpg', 'https://i.ibb.co/KcNwG3JN/IMG-9714.jpg'
-                ]
+        // --- ЗАГРУЗКА ВНУТРИ КАРТОЧКИ ---
+        async function handleInlineUpload() {
+            const files = document.getElementById('inline-upload-file').files;
+            if (files.length === 0) return;
+            
+            // Определяем текущую вкладку (фото или награды)
+            const currentType = document.getElementById('tab-photo').classList.contains('active') ? 'photo' : 'reward';
+            
+            for (let i = 0; i < files.length; i++) {
+                const base64 = await resizeImage(files[i]);
+                await saveMedia(currentActiveName, currentType, base64);
             }
-        };
+            
+            document.getElementById('inline-upload-file').value = "";
+            await buildGallery(currentType); // Обновляем текущую галерею
+            await refreshAllAvatars(); // Обновляем аватарки на главной
+        }
 
-        const CHILDREN_ARCHIVE = {
-            'Дьяченко Александр Валерьевич': {
-                photos: [
-                    'https://i.ibb.co/WNP5NKPR/IMG-9654.jpg', 'https://i.ibb.co/b8ntMMW/IMG-9655.jpg', 'https://i.ibb.co/Zp7pZyn7/IMG-9669.jpg',
-                    'https://i.ibb.co/d0gZrh2L/IMG-9672.jpg', 'https://i.ibb.co/hxdN4qhq/IMG-9683.jpg', 'https://i.ibb.co/GygJ4qz/IMG-9684.jpg',
-                    'https://i.ibb.co/Xx325NkT/IMG-9685.jpg', 'https://i.ibb.co/zhgNTJrx/IMG-9686.jpg', 'https://i.ibb.co/C41QHpY/IMG-9687.jpg',
-                    'https://i.ibb.co/jPMYNn0S/IMG-9688.jpg', 'https://i.ibb.co/xTxRrqG/IMG-9689.jpg', 'https://i.ibb.co/j9rsFCB8/IMG-9690.jpg',
-                    'https://i.ibb.co/VcyHZM5M/IMG-9739.jpg', 'https://i.ibb.co/LzxTGN48/IMG-9740.jpg', 'https://i.ibb.co/bgGLxPZb/IMG-9742.jpg',
-                    'https://i.ibb.co/V0hSpYk7/IMG-9743.jpg', 'https://i.ibb.co/RkFK4sv0/IMG-9744.jpg', 'https://i.ibb.co/4n1tKpVq/IMG-9745.jpg',
-                    'https://i.ibb.co/60kJqkpL/IMG-9747.jpg', 'https://i.ibb.co/FdP1wQM/IMG-9748.jpg', 'https://i.ibb.co/VK9C2tJ/IMG-9752.jpg',
-                    'https://i.ibb.co/cKJbXNkL/IMG-9753.jpg', 'https://i.ibb.co/jFYrWcL/IMG-9754.jpg', 'https://i.ibb.co/TDjHDqrc/IMG-9755.jpg',
-                    'https://i.ibb.co/QjkXfB0q/IMG-9778.jpg', 'https://i.ibb.co/My8WPLgB/2026-10-21-145133.png', 'https://i.ibb.co/Tqmppjjp/2026-10-21-145147.png',
-                    'https://i.ibb.co/KJjwCMd/2026-10-21-145201.png'
-                ],
-                rewards: [
-                    'https://i.ibb.co/G4PTprbg/IMG-9700.jpg', 'https://i.ibb.co/HDsCcPMG/IMG-9706.jpg', 'https://i.ibb.co/wZbffRhT/IMG-9707.jpg',
-                    'https://i.ibb.co/fzBFgBSv/IMG-9708.jpg', 'https://i.ibb.co/Z6WNrKhM/IMG-9709.jpg', 'https://i.ibb.co/1tKtGXJR/IMG-9710.jpg',
-                    'https://i.ibb.co/PZKQBDgP/IMG-9711.jpg', 'https://i.ibb.co/0pBBHvcn/IMG-9712.jpg'
-                ]
-            },
-            'Дьяченко Владимир Валерьевич': {
-                photos: [
-                    'https://i.ibb.co/RpKJPL4Q/IMG-9624.jpg', 'https://i.ibb.co/Y4F9YGD5/IMG-9637.jpg', 'https://i.ibb.co/cKXbwbNF/IMG-9656.jpg',
-                    'https://i.ibb.co/7JMKtz9Y/IMG-9661.jpg', 'https://i.ibb.co/35sXLCzg/IMG-9678.jpg', 'https://i.ibb.co/sv78tb1f/IMG-9680.jpg',
-                    'https://i.ibb.co/3y3rLx4h/IMG-9681.jpg', 'https://i.ibb.co/Kxv108HN/IMG-9746.jpg', 'https://i.ibb.co/7LsJCVJ/IMG-9758.jpg',
-                    'https://i.ibb.co/tpNr7bjB/2026-10-21-145302.png', 'https://i.ibb.co/R42nptg6/2026-10-21-145314.png'
-                ],
-                rewards: [
-                    'https://i.ibb.co/YTNzKmYf/IMG-9704.jpg', 'https://i.ibb.co/67BVvtdg/IMG-9715.jpg', 'https://i.ibb.co/xtD5vn7X/IMG-9716.jpg'
-                ]
-            }
-        };
+        // --- СМЕНА ОБЛОЖКИ ---
+        async function handleCoverUpload() {
+            const file = document.getElementById('cover-upload-file').files[0];
+            if (!file) return;
+            
+            const base64 = await resizeImage(file, 500);
+            await saveMedia(currentActiveName, 'cover', base64);
+            
+            document.getElementById('cover-upload-file').value = "";
+            await loadCoverForProfile(currentActiveName);
+            await refreshAllAvatars();
+        }
 
-        const ALBUMS = {};
-        Object.entries(PHOTO_ALBUMS).forEach(([name, photos]) => { ALBUMS[name] = { photos: photos, rewards: [] }; });
-        Object.assign(ALBUMS, PARENTS_ARCHIVE, CHILDREN_ARCHIVE);
-        
-        ALBUMS['Дьяченко Иван Иванович'] = { photos: [], rewards: [] };
-        ALBUMS['Дьяченко (Котова) Надежда Павловна'] = { photos: [], rewards: [] };
-        ALBUMS['Иванов Евгений Михайлович'] = { photos: [], rewards: [] };
-        ALBUMS['Иванова (Руть) Александра Родионовна'] = { photos: [], rewards: [] };
-
-        Object.keys(COVERS).forEach(name => {
-            if (ALBUMS[name] && COVERS[name]) {
-                if (!ALBUMS[name].photos.includes(COVERS[name])) {
-                    ALBUMS[name].photos.unshift(COVERS[name]);
-                }
-            }
-        });
-
-        const GENERAL_ALBUM = [
-            'https://i.ibb.co/93NpLTps/IMG-9613.jpg', 'https://i.ibb.co/Df1pnVKY/IMG-9614.jpg', 'https://i.ibb.co/JYfyZWr/IMG-9622.jpg',
-            'https://i.ibb.co/5x26cJmQ/IMG-9627.jpg', 'https://i.ibb.co/HfPKys2Q/IMG-9628.jpg', 'https://i.ibb.co/XfYqSpZw/IMG-9629.jpg',
-            'https://i.ibb.co/6Rqbk8yh/IMG-9631.jpg', 'https://i.ibb.co/mQzfKN0/IMG-9632.jpg', 'https://i.ibb.co/LzwkC2nS/IMG-9633.jpg',
-            'https://i.ibb.co/cSPYRSDP/IMG-9634.jpg', 'https://i.ibb.co/wZrxCRSx/IMG-9635.jpg', 'https://i.ibb.co/xS2Mwrvz/IMG-9636.jpg',
-            'https://i.ibb.co/hwTmPDY/IMG-9638.jpg', 'https://i.ibb.co/7NgWp681/IMG-9643.jpg', 'https://i.ibb.co/67sSvb6s/IMG-9645.jpg',
-            'https://i.ibb.co/VcrnKRZK/IMG-9646.jpg', 'https://i.ibb.co/nsnxvmm0/IMG-9647.jpg', 'https://i.ibb.co/ffyFPZG/IMG-9649.jpg',
-            'https://i.ibb.co/N6N0g0JV/IMG-9650.jpg', 'https://i.ibb.co/fztr7qNQ/IMG-9651.jpg', 'https://i.ibb.co/gb1S8B88/IMG-9652.jpg',
-            'https://i.ibb.co/wN8dpWvX/IMG-9653.jpg', 'https://i.ibb.co/cKnZzxFw/IMG-9659.jpg', 'https://i.ibb.co/ZRYqMTfN/IMG-9660.jpg',
-            'https://i.ibb.co/Kpk6t3Pz/IMG-9662.jpg', 'https://i.ibb.co/67tcpPyx/IMG-9664.jpg', 'https://i.ibb.co/b5qJYfkz/IMG-9670.jpg',
-            'https://i.ibb.co/hFk7g0qZ/IMG-9671.jpg', 'https://i.ibb.co/R4cHxs6H/IMG-9673.jpg', 'https://i.ibb.co/3yXv3KJW/IMG-9674.jpg',
-            'https://i.ibb.co/VYwZwJZp/IMG-9679.jpg', 'https://i.ibb.co/jvw5txV9/IMG-9717.jpg', 'https://i.ibb.co/NdTYXWLZ/IMG-9718.jpg',
-            'https://i.ibb.co/0pjR6Qhs/IMG-9721.jpg', 'https://i.ibb.co/8gcVKjTk/IMG-9724.jpg', 'https://i.ibb.co/5gvrF7GG/IMG-9725.jpg',
-            'https://i.ibb.co/0yc7Hb7F/IMG-9726.jpg', 'https://i.ibb.co/7tKygd21/IMG-9729.jpg', 'https://i.ibb.co/d0tQCw2F/IMG-9733.jpg',
-            'https://i.ibb.co/7J23swvF/IMG-9736.jpg', 'https://i.ibb.co/DDbkgPG1/IMG-9756.jpg', 'https://i.ibb.co/xqrR4rFr/IMG-9757.jpg',
-            'https://i.ibb.co/B2WtYnbm/IMG-9764.jpg', 'https://i.ibb.co/NdJnGHjw/IMG-9765.jpg', 'https://i.ibb.co/gbZvyBzD/IMG-9766.jpg',
-            'https://i.ibb.co/B0DRFPV/IMG-9767.jpg', 'https://i.ibb.co/jvLx9900/IMG-9770.jpg', 'https://i.ibb.co/PsNgTDpW/IMG-9771.jpg',
-            'https://i.ibb.co/N2y2r83z/IMG-9772.jpg', 'https://i.ibb.co/pvbT9Lnb/IMG-9773.jpg', 'https://i.ibb.co/FqqNcRJc/IMG-9774.jpg',
-            'https://i.ibb.co/W4Zv4zxD/IMG-9783.jpg', 'https://i.ibb.co/bM0YQYQS/IMG-9784.jpg', 'https://i.ibb.co/jkRJHhnd/IMG-9785.jpg',
-            'https://i.ibb.co/99j6Gmtt/IMG-9789.jpg', 'https://i.ibb.co/d0hzZ3Nx/IMG-9796.jpg', 'https://i.ibb.co/9k54kMcb/IMG-9797.jpg',
-            'https://i.ibb.co/Cp81YWyk/IMG-9813.jpg', 'https://i.ibb.co/JjmdWZ2c/IMG-9814.jpg', 'https://i.ibb.co/23Rmw1gS/IMG-9836.jpg',
-            'https://i.ibb.co/gb2Fd0fR/IMG-9840.jpg', 'https://i.ibb.co/ccPV1pfv/IMG-9862.jpg', 'https://i.ibb.co/Xkrt8tHs/IMG-9865.jpg',
-            'https://i.ibb.co/GfdpQT77/IMG-9869.jpg', 'https://i.ibb.co/R4N3Qb1N/2026-10-21-145904.png', 'https://i.ibb.co/J1YtkhD/2026-10-21-145933.png',
-            'https://i.ibb.co/zW70rJvp/2026-10-21-145946.png', 'https://i.ibb.co/YF1pT9BP/2026-10-21-145959.png', 'https://i.ibb.co/7JX3HSz0/2026-10-21-150013.png',
-            'https://i.ibb.co/fVrsdwQQ/2026-10-21-150032.png', 'https://i.ibb.co/N2hFRK5T/2026-10-21-150040.png', 'https://i.ibb.co/zTfVzw3S/2026-10-21-150050.png'
-        ];
-
+        // --- ОТРИСОВКА ИНТЕРФЕЙСА ---
         let currentActiveName = "";
         let activeSlideIndex = 0;
 
-        function checkPassword() {
-            if (document.getElementById("password-input").value === FAMILY_PASSWORD) {
-                document.getElementById("password-screen").style.display = "none";
-                document.getElementById("main-content").style.display = "block";
-                renderGeneralAlbum();
-            } else {
-                document.getElementById("error-message").style.display = "block";
+        async function initApp() {
+            // Загружаем аватарки для карточек на главной
+            await refreshAllAvatars();
+            // Загружаем общий альбом
+            await renderGeneralAlbum();
+        }
+
+        async function refreshAllViews() {
+            await refreshAllAvatars();
+            await renderGeneralAlbum();
+            if (currentActiveName && document.getElementById('profile-modal').classList.contains('active')) {
+                const currentType = document.getElementById('tab-photo').classList.contains('active') ? 'photo' : 'reward';
+                await buildGallery(currentType);
+                await loadCoverForProfile(currentActiveName);
             }
         }
-        document.getElementById("password-input").addEventListener("keypress", function(e) { if (e.key === "Enter") checkPassword(); });
 
-        // Отображение общего альбома (ImgBB + Локальные)
+        async function refreshAllAvatars() {
+            const cards = document.querySelectorAll('.member-card');
+            for (let card of cards) {
+                const name = card.getAttribute('onclick').match(/'([^']+)'/)[1];
+                const covers = await getMedia(name, 'cover');
+                const img = document.getElementById(`avatar-${name}`);
+                if (img) {
+                    if (covers.length > 0) {
+                        img.src = covers[0].dataUrl;
+                    } else {
+                        // Стандартная заглушка, если обложки нет
+                        img.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%23EFEBE4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%238C7B6E%22%20font-family%3D%22Georgia%22%20font-size%3D%2230%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%91%A4%3C%2Ftext%3E%3C%2Fsvg%3E';
+                    }
+                }
+            }
+        }
+
         async function renderGeneralAlbum() {
             const container = document.getElementById('general-album-container');
             container.innerHTML = '';
             
-            const localPhotos = await getPhotosFromDB('general');
-            const allPhotos = [...localPhotos, ...GENERAL_ALBUM]; // Локальные идут первыми
-
-            if (allPhotos.length === 0) {
-                container.innerHTML = '<p>Фотографий пока нет.</p>';
+            const media = await getMedia('general', 'photo');
+            if (media.length === 0) {
+                container.innerHTML = '<p>В общем альбоме пока нет фотографий. Добавьте их через форму сверху.</p>';
                 return;
             }
 
-            allPhotos.forEach(src => {
+            media.forEach(item => {
                 const img = document.createElement('img');
-                img.src = src;
+                img.src = item.dataUrl;
                 img.className = 'album-photo';
-                img.referrerPolicy = 'no-referrer';
-                img.onerror = () => { img.style.display = 'none'; }; // Скрываем битые фото ImgBB
-                img.onclick = () => viewSingleImage(src);
+                img.onclick = () => viewSingleImage(item.dataUrl);
                 container.appendChild(img);
             });
         }
@@ -514,64 +491,90 @@
             document.getElementById('modal-name').innerText = "Фото из архива";
             document.getElementById('modal-status').innerText = "";
             document.getElementById('modal-bio').innerText = "";
-            document.getElementById('modal-gallery-box').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:contain;" referrerpolicy="no-referrer">`;
+            document.getElementById('modal-cover-img').style.display = 'none';
+            document.getElementById('modal-gallery-box').innerHTML = `<img src="${src}" style="width:100%;height:100%;object-fit:contain;">`;
             document.getElementById('profile-modal').classList.add('active');
         }
 
         async function openProfile(name, status, bio) {
             currentActiveName = name;
+            document.getElementById('modal-tabs').style.display = 'flex';
+            document.getElementById('modal-cover-img').style.display = 'block';
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-status').innerText = status;
             document.getElementById('modal-bio').innerText = bio;
 
-            const hasRewards = ALBUMS[name] && ALBUMS[name].rewards && ALBUMS[name].rewards.length > 0;
-            document.getElementById('modal-tabs').style.display = hasRewards ? 'flex' : 'none';
-
             document.getElementById('tab-photo').classList.add('active');
-            if (document.getElementById('tab-reward')) document.getElementById('tab-reward').classList.remove('active');
+            document.getElementById('tab-reward').classList.remove('active');
 
-            await buildGallery('photos');
+            await loadCoverForProfile(name);
+            await buildGallery('photo');
             document.getElementById('profile-modal').classList.add('active');
+        }
+
+        async function loadCoverForProfile(name) {
+            const img = document.getElementById('modal-cover-img');
+            const covers = await getMedia(name, 'cover');
+            if (covers.length > 0) {
+                img.src = covers[0].dataUrl;
+            } else {
+                img.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23EFEBE4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%238C7B6E%22%20font-family%3D%22Georgia%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%91%A4%3C%2Ftext%3E%3C%2Fsvg%3E';
+            }
         }
 
         async function buildGallery(type) {
             const box = document.getElementById('modal-gallery-box');
-            box.innerHTML = '<p style="padding:20px;">Загрузка...</p>';
             
-            const localPhotos = await getPhotosFromDB(currentActiveName);
-            const staticPhotos = (ALBUMS[currentActiveName] && ALBUMS[currentActiveName][type]) ? ALBUMS[currentActiveName][type] : [];
-            
-            const allPhotos = [...localPhotos, ...staticPhotos];
+            const media = await getMedia(currentActiveName, type);
 
-            if (allPhotos.length === 0) {
-                box.innerHTML = `<div class="profile-photo-placeholder">📷<br>Фото пока нет</div>`;
+            if (media.length === 0) {
+                box.innerHTML = `<div class="profile-photo-placeholder">📷<br>В этом альбоме пока нет фото</div>`;
                 return;
             }
 
             activeSlideIndex = 0;
-            let html = allPhotos.map((src, i) => 
-                `<img src="${src}" class="gallery-slide ${i === 0 ? 'active' : ''}" referrerpolicy="no-referrer" onerror="this.style.display='none'">`
+            let html = media.map((item, i) => 
+                `<div style="width:100%; height:100%; display:${i === 0 ? 'block' : 'none'};" class="gallery-slide-wrapper" data-id="${item.id}">
+                    <img src="${item.dataUrl}" class="gallery-slide active" style="object-fit:contain;">
+                    <button class="delete-photo-btn" onclick="removePhoto(${item.id}, '${type}')">🗑️ Удалить</button>
+                </div>`
             ).join('');
 
-            if (allPhotos.length > 1) {
+            if (media.length > 1) {
                 html += `<button class="nav-arrow prev-arrow" onclick="changeSlide(-1)">&#10094;</button>`;
                 html += `<button class="nav-arrow next-arrow" onclick="changeSlide(1)">&#10095;</button>`;
             }
+            
+            // Мы используем обертку для каждого слайда, чтобы кнопка удаления была привязана к конкретному фото
             box.innerHTML = html;
+            updateSliderDisplay();
+        }
+
+        function updateSliderDisplay() {
+            const wrappers = document.querySelectorAll('.gallery-slide-wrapper');
+            wrappers.forEach((w, index) => {
+                w.style.display = index === activeSlideIndex ? 'block' : 'none';
+            });
         }
 
         function changeSlide(dir) {
-            const slides = document.getElementsByClassName('gallery-slide');
-            if (slides.length <= 1) return;
-            slides[activeSlideIndex].classList.remove('active');
-            activeSlideIndex = (activeSlideIndex + dir + slides.length) % slides.length;
-            slides[activeSlideIndex].classList.add('active');
+            const wrappers = document.querySelectorAll('.gallery-slide-wrapper');
+            if (wrappers.length <= 1) return;
+            activeSlideIndex = (activeSlideIndex + dir + wrappers.length) % wrappers.length;
+            updateSliderDisplay();
+        }
+
+        async function removePhoto(id, type) {
+            if (confirm("Вы уверены, что хотите удалить это фото?")) {
+                await deleteMedia(id);
+                await buildGallery(type);
+            }
         }
 
         async function switchTab(type) {
             document.getElementById('tab-photo').classList.toggle('active', type === 'photo');
             document.getElementById('tab-reward').classList.toggle('active', type === 'reward');
-            await buildGallery(type === 'photo' ? 'photos' : 'rewards');
+            await buildGallery(type);
         }
 
         function closeProfile(e) {
@@ -579,6 +582,17 @@
                 document.getElementById('profile-modal').classList.remove('active');
             }
         }
+
+        // Авторизация
+        function checkPassword() {
+            if (document.getElementById("password-input").value === FAMILY_PASSWORD) {
+                document.getElementById("password-screen").style.display = "none";
+                document.getElementById("main-content").style.display = "block";
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
+        }
+        document.getElementById("password-input").addEventListener("keypress", function(e) { if (e.key === "Enter") checkPassword(); });
     </script>
 </body>
 </html>
