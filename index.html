@@ -28,11 +28,13 @@
         .old-tag { background: rgba(139,90,43,0.1); color: #8B5A2B; }
         .branch-title { width: 100%; text-align: center; font-style: italic; color: #6E5F54; margin-bottom: 12px; font-size: 14px; font-weight: bold; border-bottom: 1px dotted #D5CBB7; padding-bottom: 4px; }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(46,37,34,0.6); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 10000; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
         .modal-card { background: #FDFBF7; border: 3px double #B5A896; border-radius: 12px; padding: 25px; max-width: 550px; width: 90%; position: relative; max-height: 90vh; overflow-y: auto; }
         .close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #8C7B6E; font-weight: bold; z-index: 10; }
         .gallery-container { width: 100%; height: 260px; background: #EFEBE4; border: 2px solid #C4BCAF; border-radius: 6px; margin-bottom: 15px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .gallery-slide { width: 100%; height: 100%; object-fit: cover; display: none; }
         .gallery-slide.active { display: block; }
+        .profile-photo-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #8C7B6E; font-size: 14px; text-align: center; }
         .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(110,95,84,0.7); color: white; border: none; font-size: 18px; padding: 8px 12px; cursor: pointer; border-radius: 4px; transition: background 0.2s; z-index: 5; }
         .nav-arrow:hover { background: rgba(74,62,61,0.9); }
         .prev-arrow { left: 10px; }
@@ -161,248 +163,260 @@
             </form>
         </section>
     </div>
-        <script>
+
+    <script>
         const FAMILY_PASSWORD = "NashRod2026";
-        
-const PHOTO_ALBUMS = {
-    'Дьяченко Анатолий Иванович': [
-        'https://i.ibb.co/Z6b1Lgb7/IMG-9833.jpg',
-        'https://i.ibb.co/60gvLLnd/IMG-9837.jpg',
-        'https://i.ibb.co/842QknDK/IMG-9838.jpg',
-        'https://i.ibb.co/4gCd51Rt/IMG-9841.jpg',
-        'https://i.ibb.co/CsWN3xbT/IMG-9846.jpg',
-        'https://i.ibb.co/1fSG9Cg0/IMG-9847.jpg',
-        'https://i.ibb.co/xK3txmS7/IMG-9848.jpg',
-        'https://i.ibb.co/B5n2yFmX/IMG-9854.jpg',
-        'https://i.ibb.co/d0B3Ntm2/IMG-9855.jpg',
-        'https://i.ibb.co/RG4CNR8F/IMG-9858.jpg',
-        'https://i.ibb.co/ZzDcB2zt/IMG-9859.jpg'
-    ],
-    'Дьяченко (Иванова) Тамара Евгеньевна': [
-        'https://i.ibb.co/Xrv6v1QZ/IMG-9832.jpg',
-        'https://i.ibb.co/3Yr0W8Sk/IMG-9834.jpg',
-        'https://i.ibb.co/Q1vf3DP/IMG-9849.jpg',
-        'https://i.ibb.co/W4GsNmpD/IMG-9850.jpg',
-        'https://i.ibb.co/cSWB4Pg4/IMG-9851.jpg',
-        'https://i.ibb.co/5grvgxLj/IMG-9853.jpg',
-        'https://i.ibb.co/VYLW0Czd/IMG-9857.jpg'
-    ],
-    'Никонович Андрей Ануфриевич': [
-        'https://i.ibb.co/DPF3WM77/IMG-9623.jpg',
-        'https://i.ibb.co/p9BjkyY/IMG-9697.jpg',
-        'https://i.ibb.co/xKvK8NWb/IMG-9761.jpg',
-        'https://i.ibb.co/9HbMmgXD/IMG-9763.jpg',
-        'https://i.ibb.co/twjcT63q/IMG-9781.jpg',
-        'https://i.ibb.co/zhb4WJ00/IMG-9782.jpg',
-        'https://i.ibb.co/7tKmGyHC/IMG-9790.jpg',
-        'https://i.ibb.co/6J7GnDMN/IMG-9794.jpg',
-        'https://i.ibb.co/HDMV9ssL/IMG-9800.jpg',
-        'https://i.ibb.co/jZ1CVhS7/IMG-9803.jpg',
-        'https://i.ibb.co/FkTqRHQC/IMG-9804.jpg',
-        'https://i.ibb.co/237JzMxj/IMG-9805.jpg',
-        'https://i.ibb.co/5XRn5Gw4/IMG-9806.jpg',
-        'https://i.ibb.co/7t931FvV/IMG-9807.jpg',
-        'https://i.ibb.co/21VKcrzC/IMG-9809.jpg'
-    ],
-    'Никонович Анна Яковлевна': [
-        'https://i.ibb.co/ccRTNSfx/IMG-9644.jpg',
-        'https://i.ibb.co/S7WBNKPr/image.jpg',
-        'https://i.ibb.co/MkRPtgYp/image.jpg',
-        'https://i.ibb.co/hJW7vNqK/image.jpg',
-        'https://i.ibb.co/NgPB84BK/image.jpg',
-        'https://i.ibb.co/7tC86FZZ/image.jpg',
-        'https://i.ibb.co/WNBd4QH3/image.jpg',
-        'https://i.ibb.co/3mTF146w/image.jpg',
-        'https://i.ibb.co/sDm43yt/image.jpg',
-        'https://i.ibb.co/VYLkG2vY/image.jpg',
-        'https://i.ibb.co/cc6VCD02/image.jpg',
-        'https://i.ibb.co/SXMcjYds/image.jpg',
-        'https://i.ibb.co/hxY2Jp1N/IMG-9811.jpg'
-    ]
-};
-// Медиа-архив родителей (Альбомы + Награды)
-const PARENTS_ARCHIVE = {
-    'Дьяченко Ольга Андреевна': {
-        photos: [
-            'https://i.ibb.co/M5QFnTm8/IMG-9641.jpg',
-            'https://i.ibb.co/WpWbLLsr/IMG-9648.jpg',
-            'https://i.ibb.co/fPH3s8h/IMG-9658.jpg',
-            'https://i.ibb.co/HTXcHFG2/IMG-9663.jpg',
-            'https://i.ibb.co/pcyKSqL/IMG-9665.jpg',
-            'https://i.ibb.co/5WkyXqg6/IMG-9666.jpg',
-            'https://i.ibb.co/CKCXbWT1/IMG-9675.jpg',
-            'https://i.ibb.co/0kL3yNy/IMG-9682.jpg',
-            'https://i.ibb.co/Wv8XM4fF/IMG-9722.jpg',
-            'https://i.ibb.co/rCQYtx3/IMG-9727.jpg',
-            'https://i.ibb.co/2195Gh2g/IMG-9728.jpg',
-            'https://i.ibb.co/Fk9NbHcH/IMG-9732.jpg',
-            'https://i.ibb.co/JjVr2fXx/IMG-9741.jpg',
-            'https://i.ibb.co/3mWYsrDd/IMG-9768.jpg',
-            'https://i.ibb.co/NdH65qQG/IMG-9769.jpg',
-            'https://i.ibb.co/5WtgxqGJ/IMG-9779.jpg',
-            'https://i.ibb.co/4nYyVKFK/IMG-9780.jpg',
-            'https://i.ibb.co/jPXLxdg0/IMG-9799.png',
-            'https://i.ibb.co/Mv8Lv61/IMG-97991.jpg',
-            'https://i.ibb.co/MLm5yWf/IMG-98022.jpg',
-            'https://i.ibb.co/VpLZ23bC/IMG-9730.jpg'
-        ],
-        rewards: [
-            'https://i.ibb.co/Qt3jt12/IMG-9695.jpg',
-            'https://i.ibb.co/s9dB8GGJ/IMG-9702.jpg',
-            'https://i.ibb.co/LzzVf7yd/IMG-9705.jpg',
-            'https://i.ibb.co/TBC20bRS/IMG-9713.jpg'
-        ]
-    },
-    'Дьяченко Валерий Анатольевич': {
-        photos: [
-            'https://i.ibb.co/m5xHNnF2/IMG-9625.jpg',
-            'https://i.ibb.co/1Gsjvj9L/IMG-9626.jpg',
-            'https://i.ibb.co/G4xcrRkG/IMG-9630.jpg',
-            'https://i.ibb.co/67QjHxH4/IMG-9639.jpg',
-            'https://i.ibb.co/Fk4fMLxS/IMG-9642.jpg',
-            'https://i.ibb.co/wFkScMK2/IMG-9657.jpg',
-            'https://i.ibb.co/kg5ppsF7/IMG-9667.jpg',
-            'https://i.ibb.co/3Yj9jrZF/IMG-9668.jpg',
-            'https://i.ibb.co/Qvnr2RPT/IMG-9677.jpg',
-            'https://i.ibb.co/Mkkdc25H/IMG-9693.jpg',
-            'https://i.ibb.co/Y7GwL64B/IMG-9723.jpg',
-            'https://i.ibb.co/G38R9053/IMG-9735.jpg',
-            'https://i.ibb.co/m5ryvTy5/IMG-9737.jpg',
-            'https://i.ibb.co/cXF9dFMv/IMG-9738.jpg',
-            'https://i.ibb.co/R4dMjzhq/IMG-9749.jpg',
-            'https://i.ibb.co/gM1CzxBd/IMG-9750.jpg',
-            'https://i.ibb.co/hR2hqw5J/IMG-9751.jpg',
-            'https://i.ibb.co/934p6B52/IMG-9842.jpg',
-            'https://i.ibb.co/xSJYk8bF/photo-5388885364988125078-y.jpg',
-            'https://i.ibb.co/pvJZVqGw/2026-10-21-145406.png'
-        ],
-        rewards: [
-            'https://i.ibb.co/39SnvmsL/IMG-9691.jpg',
-            'https://i.ibb.co/R8rKm16/IMG-9692.jpg',
-            'https://i.ibb.co/sJ6vbG2P/IMG-9694.jpg',
-            'https://i.ibb.co/sv643sgY/IMG-9696.jpg',
-            'https://i.ibb.co/zHfG9vFd/IMG-9701.jpg',
-            'https://i.ibb.co/hxvsv8C7/IMG-9703.jpg',
-            'https://i.ibb.co/nNffngz4/IMG-9713.jpg',
-            'https://i.ibb.co/KcNwG3JN/IMG-9714.jpg'
-        ]
-    }
-};
-// Медиа-архив младшего поколения (Альбомы + Награды)
-const CHILDREN_ARCHIVE = {
-    'Дьяченко Александр Валерьевич': {
-        photos: [
-            'https://i.ibb.co/WNP5NKPR/IMG-9654.jpg',
-            'https://i.ibb.co/b8ntMMW/IMG-9655.jpg',
-            'https://i.ibb.co/Zp7pZyn7/IMG-9669.jpg',
-            'https://i.ibb.co/d0gZrh2L/IMG-9672.jpg',
-            'https://i.ibb.co/hxdN4qhq/IMG-9683.jpg',
-            'https://i.ibb.co/GygJ4qz/IMG-9684.jpg',
-            'https://i.ibb.co/Xx325NkT/IMG-9685.jpg',
-            'https://i.ibb.co/zhgNTJrx/IMG-9686.jpg',
-            'https://i.ibb.co/C41QHpY/IMG-9687.jpg',
-            'https://i.ibb.co/jPMYNn0S/IMG-9688.jpg',
-            'https://i.ibb.co/xTxRrqG/IMG-9689.jpg',
-            'https://i.ibb.co/j9rsFCB8/IMG-9690.jpg',
-            'https://i.ibb.co/VcyHZM5M/IMG-9739.jpg',
-            'https://i.ibb.co/LzxTGN48/IMG-9740.jpg',
-            'https://i.ibb.co/bgGLxPZb/IMG-9742.jpg',
-            'https://i.ibb.co/V0hSpYk7/IMG-9743.jpg',
-            'https://i.ibb.co/RkFK4sv0/IMG-9744.jpg',
-            'https://i.ibb.co/4n1tKpVq/IMG-9745.jpg',
-            'https://i.ibb.co/60kJqkpL/IMG-9747.jpg',
-            'https://i.ibb.co/FdP1wQM/IMG-9748.jpg',
-            'https://i.ibb.co/VK9C2tJ/IMG-9752.jpg',
-            'https://i.ibb.co/cKJbXNkL/IMG-9753.jpg',
-            'https://i.ibb.co/jFYrWcL/IMG-9754.jpg',
-            'https://i.ibb.co/TDjHDqrc/IMG-9755.jpg',
-            'https://i.ibb.co/QjkXfB0q/IMG-9778.jpg',
-            'https://i.ibb.co/My8WPLgB/2026-10-21-145133.png',
-            'https://i.ibb.co/Tqmppjjp/2026-10-21-145147.png',
-            'https://i.ibb.co/KJjwCMd/2026-10-21-145201.png'
-        ],
-        rewards: [
-            'https://i.ibb.co/G4PTprbg/IMG-9700.jpg',
-            'https://i.ibb.co/HDsCcPMG/IMG-9706.jpg',
-            'https://i.ibb.co/wZbffRhT/IMG-9707.jpg',
-            'https://i.ibb.co/fzBFgBSv/IMG-9708.jpg',
-            'https://i.ibb.co/Z6WNrKhM/IMG-9709.jpg',
-            'https://i.ibb.co/1tKtGXJR/IMG-9710.jpg',
-            'https://i.ibb.co/PZKQBDgP/IMG-9711.jpg',
-            'https://i.ibb.co/0pBBHvcn/IMG-9712.jpg'
-        ]
-    },
-    'Дьяченко Владимир Валерьевич': {
-        photos: [
-            'https://i.ibb.co/RpKJPL4Q/IMG-9624.jpg',
-            'https://i.ibb.co/Y4F9YGD5/IMG-9637.jpg',
-            'https://i.ibb.co/cKXbwbNF/IMG-9656.jpg',
-            'https://i.ibb.co/7JMKtz9Y/IMG-9661.jpg',
-            'https://i.ibb.co/35sXLCzg/IMG-9678.jpg',
-            'https://i.ibb.co/sv78tb1f/IMG-9680.jpg',
-            'https://i.ibb.co/3y3rLx4h/IMG-9681.jpg',
-            'https://i.ibb.co/Kxv108HN/IMG-9746.jpg',
-            'https://i.ibb.co/7LsJCVJ/IMG-9758.jpg',
-            'https://i.ibb.co/tpNr7bjB/2026-10-21-145302.png',
-            'https://i.ibb.co/R42nptg6/2026-10-21-145314.png'
-        ],
-        rewards: [
-            'https://i.ibb.co/YTNzKmYf/IMG-9704.jpg',
-            'https://i.ibb.co/67BVvtdg/IMG-9715.jpg',
-            'https://i.ibb.co/xtD5vn7X/IMG-9716.jpg'
-        ]
-    }
-};
-            'Дьяченко Иван Иванович': { photos: [] }, 'Дьяченко (Котова) Надежда Павловна': { photos: ['https://ibb.co'] },
-            'Иванов Евгений Михайлович': { photos: ['https://ibb.co'] }, 'Иванова (Рудь) Александра Родионовна': { photos: ['https://ibb.co'] }
+
+        const PHOTO_ALBUMS = {
+            'Дьяченко Анатолий Иванович': [
+                'https://i.ibb.co/Z6b1Lgb7/IMG-9833.jpg',
+                'https://i.ibb.co/60gvLLnd/IMG-9837.jpg',
+                'https://i.ibb.co/842QknDK/IMG-9838.jpg',
+                'https://i.ibb.co/4gCd51Rt/IMG-9841.jpg',
+                'https://i.ibb.co/CsWN3xbT/IMG-9846.jpg',
+                'https://i.ibb.co/1fSG9Cg0/IMG-9847.jpg',
+                'https://i.ibb.co/xK3txmS7/IMG-9848.jpg',
+                'https://i.ibb.co/B5n2yFmX/IMG-9854.jpg',
+                'https://i.ibb.co/d0B3Ntm2/IMG-9855.jpg',
+                'https://i.ibb.co/RG4CNR8F/IMG-9858.jpg',
+                'https://i.ibb.co/ZzDcB2zt/IMG-9859.jpg'
+            ],
+            'Дьяченко (Иванова) Тамара Евгеньевна': [
+                'https://i.ibb.co/Xrv6v1QZ/IMG-9832.jpg',
+                'https://i.ibb.co/3Yr0W8Sk/IMG-9834.jpg',
+                'https://i.ibb.co/Q1vf3DP/IMG-9849.jpg',
+                'https://i.ibb.co/W4GsNmpD/IMG-9850.jpg',
+                'https://i.ibb.co/cSWB4Pg4/IMG-9851.jpg',
+                'https://i.ibb.co/5grvgxLj/IMG-9853.jpg',
+                'https://i.ibb.co/VYLW0Czd/IMG-9857.jpg'
+            ],
+            'Никонович Андрей Ануфриевич': [
+                'https://i.ibb.co/DPF3WM77/IMG-9623.jpg',
+                'https://i.ibb.co/p9BjkyY/IMG-9697.jpg',
+                'https://i.ibb.co/xKvK8NWb/IMG-9761.jpg',
+                'https://i.ibb.co/9HbMmgXD/IMG-9763.jpg',
+                'https://i.ibb.co/twjcT63q/IMG-9781.jpg',
+                'https://i.ibb.co/zhb4WJ00/IMG-9782.jpg',
+                'https://i.ibb.co/7tKmGyHC/IMG-9790.jpg',
+                'https://i.ibb.co/6J7GnDMN/IMG-9794.jpg',
+                'https://i.ibb.co/HDMV9ssL/IMG-9800.jpg',
+                'https://i.ibb.co/jZ1CVhS7/IMG-9803.jpg',
+                'https://i.ibb.co/FkTqRHQC/IMG-9804.jpg',
+                'https://i.ibb.co/237JzMxj/IMG-9805.jpg',
+                'https://i.ibb.co/5XRn5Gw4/IMG-9806.jpg',
+                'https://i.ibb.co/7t931FvV/IMG-9807.jpg',
+                'https://i.ibb.co/21VKcrzC/IMG-9809.jpg'
+            ],
+            'Никонович Анна Яковлевна': [
+                'https://i.ibb.co/ccRTNSfx/IMG-9644.jpg',
+                'https://i.ibb.co/S7WBNKPr/image.jpg',
+                'https://i.ibb.co/MkRPtgYp/image.jpg',
+                'https://i.ibb.co/hJW7vNqK/image.jpg',
+                'https://i.ibb.co/NgPB84BK/image.jpg',
+                'https://i.ibb.co/7tC86FZZ/image.jpg',
+                'https://i.ibb.co/WNBd4QH3/image.jpg',
+                'https://i.ibb.co/3mTF146w/image.jpg',
+                'https://i.ibb.co/sDm43yt/image.jpg',
+                'https://i.ibb.co/VYLkG2vY/image.jpg',
+                'https://i.ibb.co/cc6VCD02/image.jpg',
+                'https://i.ibb.co/SXMcjYds/image.jpg',
+                'https://i.ibb.co/hxY2Jp1N/IMG-9811.jpg'
+            ]
         };
-const GENERAL_ALBUM = [
-    'https://i.ibb.co/93NpLTps/IMG-9613.jpg',
-    'https://i.ibb.co/Df1pnVKY/IMG-9614.jpg',
-    'https://i.ibb.co/JYfyZWr/IMG-9622.jpg',
-    'https://i.ibb.co/5x26cJmQ/IMG-9627.jpg',
-    'https://i.ibb.co/HfPKys2Q/IMG-9628.jpg',
-    'https://i.ibb.co/XfYqSpZw/IMG-9629.jpg',
-    'https://i.ibb.co/6Rqbk8yh/IMG-9631.jpg',
-    'https://i.ibb.co/mQzfKN0/IMG-9632.jpg',
-    'https://i.ibb.co/LzwkC2nS/IMG-9633.jpg',
-    'https://i.ibb.co/cSPYRSDP/IMG-9634.jpg',
-    'https://i.ibb.co/wZrxCRSx/IMG-9635.jpg',
-    'https://i.ibb.co/xS2Mwrvz/IMG-9636.jpg',
-    'https://i.ibb.co/hwTmPDY/IMG-9638.jpg',
-    'https://i.ibb.co/7NgWp681/IMG-9643.jpg',
-    'https://i.ibb.co/67sSvb6s/IMG-9645.jpg',
-    'https://i.ibb.co/VcrnKRZK/IMG-9646.jpg',
-    'https://i.ibb.co/nsnxvmm0/IMG-9647.jpg',
-    'https://i.ibb.co/ffyFPZG/IMG-9649.jpg',
-    'https://i.ibb.co/N6N0g0JV/IMG-9650.jpg',
-    'https://i.ibb.co/fztr7qNQ/IMG-9651.jpg',
-    'https://i.ibb.co/gb1S8B88/IMG-9652.jpg',
-    'https://i.ibb.co/wN8dpWvX/IMG-9653.jpg',
-    'https://i.ibb.co/cKnZzxFw/IMG-9659.jpg',
-    'https://i.ibb.co/ZRYqMTfN/IMG-9660.jpg',
-    'https://i.ibb.co/Kpk6t3Pz/IMG-9662.jpg',
-    'https://i.ibb.co/67tcpPyx/IMG-9664.jpg',
-    'https://i.ibb.co/b5qJYfkz/IMG-9670.jpg',
-    'https://i.ibb.co/hFk7g0qZ/IMG-9671.jpg',
-    'https://i.ibb.co/R4cHxs6H/IMG-9673.jpg',
-    'https://i.ibb.co/3yXv3KJW/IMG-9674.jpg',
-    'https://i.ibb.co/VYwZwJZp/IMG-9679.jpg',
-    'https://i.ibb.co/jvw5txV9/IMG-9717.jpg',
-    'https://i.ibb.co/NdTYXWLZ/IMG-9718.jpg',
-    'https://i.ibb.co/0pjR6Qhs/IMG-9721.jpg',
-    'https://i.ibb.co/8gcVKjTk/IMG-9724.jpg',
-    'https://i.ibb.co/5gvrF7GG/IMG-9725.jpg',
-    'https://i.ibb.co/0yc7Hb7F/IMG-9726.jpg',
-    'https://i.ibb.co/7tKygd21/IMG-9729.jpg',
-    'https://i.ibb.co/d0tQCw2F/IMG-9733.jpg',
-    'https://i.ibb.co/7J23swvF/IMG-9736.jpg',
-    'https://i.ibb.co/DDbkgPG1/IMG-9756.jpg',
-    'https://i.ibb.co/xqrR4rFr/IMG-9757.jpg',
-    'https://i.ibb.co/B2WtYnbm/IMG-9764.jpg',
-    'https://i.ibb.co/NdJnGHjw/IMG-9765.jpg',
-    'https://i.ibb.co/gbZvyBzD/IMG-9766.jpg'
-];
+
+        const PARENTS_ARCHIVE = {
+            'Дьяченко Ольга Андреевна': {
+                photos: [
+                    'https://i.ibb.co/M5QFnTm8/IMG-9641.jpg',
+                    'https://i.ibb.co/WpWbLLsr/IMG-9648.jpg',
+                    'https://i.ibb.co/fPH3s8h/IMG-9658.jpg',
+                    'https://i.ibb.co/HTXcHFG2/IMG-9663.jpg',
+                    'https://i.ibb.co/pcyKSqL/IMG-9665.jpg',
+                    'https://i.ibb.co/5WkyXqg6/IMG-9666.jpg',
+                    'https://i.ibb.co/CKCXbWT1/IMG-9675.jpg',
+                    'https://i.ibb.co/0kL3yNy/IMG-9682.jpg',
+                    'https://i.ibb.co/Wv8XM4fF/IMG-9722.jpg',
+                    'https://i.ibb.co/rCQYtx3/IMG-9727.jpg',
+                    'https://i.ibb.co/2195Gh2g/IMG-9728.jpg',
+                    'https://i.ibb.co/Fk9NbHcH/IMG-9732.jpg',
+                    'https://i.ibb.co/JjVr2fXx/IMG-9741.jpg',
+                    'https://i.ibb.co/3mWYsrDd/IMG-9768.jpg',
+                    'https://i.ibb.co/NdH65qQG/IMG-9769.jpg',
+                    'https://i.ibb.co/5WtgxqGJ/IMG-9779.jpg',
+                    'https://i.ibb.co/4nYyVKFK/IMG-9780.jpg',
+                    'https://i.ibb.co/jPXLxdg0/IMG-9799.png',
+                    'https://i.ibb.co/Mv8Lv61/IMG-97991.jpg',
+                    'https://i.ibb.co/MLm5yWf/IMG-98022.jpg',
+                    'https://i.ibb.co/VpLZ23bC/IMG-9730.jpg'
+                ],
+                rewards: [
+                    'https://i.ibb.co/Qt3jt12/IMG-9695.jpg',
+                    'https://i.ibb.co/s9dB8GGJ/IMG-9702.jpg',
+                    'https://i.ibb.co/LzzVf7yd/IMG-9705.jpg',
+                    'https://i.ibb.co/TBC20bRS/IMG-9713.jpg'
+                ]
+            },
+            'Дьяченко Валерий Анатольевич': {
+                photos: [
+                    'https://i.ibb.co/m5xHNnF2/IMG-9625.jpg',
+                    'https://i.ibb.co/1Gsjvj9L/IMG-9626.jpg',
+                    'https://i.ibb.co/G4xcrRkG/IMG-9630.jpg',
+                    'https://i.ibb.co/67QjHxH4/IMG-9639.jpg',
+                    'https://i.ibb.co/Fk4fMLxS/IMG-9642.jpg',
+                    'https://i.ibb.co/wFkScMK2/IMG-9657.jpg',
+                    'https://i.ibb.co/kg5ppsF7/IMG-9667.jpg',
+                    'https://i.ibb.co/3Yj9jrZF/IMG-9668.jpg',
+                    'https://i.ibb.co/Qvnr2RPT/IMG-9677.jpg',
+                    'https://i.ibb.co/Mkkdc25H/IMG-9693.jpg',
+                    'https://i.ibb.co/Y7GwL64B/IMG-9723.jpg',
+                    'https://i.ibb.co/G38R9053/IMG-9735.jpg',
+                    'https://i.ibb.co/m5ryvTy5/IMG-9737.jpg',
+                    'https://i.ibb.co/cXF9dFMv/IMG-9738.jpg',
+                    'https://i.ibb.co/R4dMjzhq/IMG-9749.jpg',
+                    'https://i.ibb.co/gM1CzxBd/IMG-9750.jpg',
+                    'https://i.ibb.co/hR2hqw5J/IMG-9751.jpg',
+                    'https://i.ibb.co/934p6B52/IMG-9842.jpg',
+                    'https://i.ibb.co/xSJYk8bF/photo-5388885364988125078-y.jpg',
+                    'https://i.ibb.co/pvJZVqGw/2026-10-21-145406.png'
+                ],
+                rewards: [
+                    'https://i.ibb.co/39SnvmsL/IMG-9691.jpg',
+                    'https://i.ibb.co/R8rKm16/IMG-9692.jpg',
+                    'https://i.ibb.co/sJ6vbG2P/IMG-9694.jpg',
+                    'https://i.ibb.co/sv643sgY/IMG-9696.jpg',
+                    'https://i.ibb.co/zHfG9vFd/IMG-9701.jpg',
+                    'https://i.ibb.co/hxvsv8C7/IMG-9703.jpg',
+                    'https://i.ibb.co/nNffngz4/IMG-9713.jpg',
+                    'https://i.ibb.co/KcNwG3JN/IMG-9714.jpg'
+                ]
+            }
+        };
+
+        const CHILDREN_ARCHIVE = {
+            'Дьяченко Александр Валерьевич': {
+                photos: [
+                    'https://i.ibb.co/WNP5NKPR/IMG-9654.jpg',
+                    'https://i.ibb.co/b8ntMMW/IMG-9655.jpg',
+                    'https://i.ibb.co/Zp7pZyn7/IMG-9669.jpg',
+                    'https://i.ibb.co/d0gZrh2L/IMG-9672.jpg',
+                    'https://i.ibb.co/hxdN4qhq/IMG-9683.jpg',
+                    'https://i.ibb.co/GygJ4qz/IMG-9684.jpg',
+                    'https://i.ibb.co/Xx325NkT/IMG-9685.jpg',
+                    'https://i.ibb.co/zhgNTJrx/IMG-9686.jpg',
+                    'https://i.ibb.co/C41QHpY/IMG-9687.jpg',
+                    'https://i.ibb.co/jPMYNn0S/IMG-9688.jpg',
+                    'https://i.ibb.co/xTxRrqG/IMG-9689.jpg',
+                    'https://i.ibb.co/j9rsFCB8/IMG-9690.jpg',
+                    'https://i.ibb.co/VcyHZM5M/IMG-9739.jpg',
+                    'https://i.ibb.co/LzxTGN48/IMG-9740.jpg',
+                    'https://i.ibb.co/bgGLxPZb/IMG-9742.jpg',
+                    'https://i.ibb.co/V0hSpYk7/IMG-9743.jpg',
+                    'https://i.ibb.co/RkFK4sv0/IMG-9744.jpg',
+                    'https://i.ibb.co/4n1tKpVq/IMG-9745.jpg',
+                    'https://i.ibb.co/60kJqkpL/IMG-9747.jpg',
+                    'https://i.ibb.co/FdP1wQM/IMG-9748.jpg',
+                    'https://i.ibb.co/VK9C2tJ/IMG-9752.jpg',
+                    'https://i.ibb.co/cKJbXNkL/IMG-9753.jpg',
+                    'https://i.ibb.co/jFYrWcL/IMG-9754.jpg',
+                    'https://i.ibb.co/TDjHDqrc/IMG-9755.jpg',
+                    'https://i.ibb.co/QjkXfB0q/IMG-9778.jpg',
+                    'https://i.ibb.co/My8WPLgB/2026-10-21-145133.png',
+                    'https://i.ibb.co/Tqmppjjp/2026-10-21-145147.png',
+                    'https://i.ibb.co/KJjwCMd/2026-10-21-145201.png'
+                ],
+                rewards: [
+                    'https://i.ibb.co/G4PTprbg/IMG-9700.jpg',
+                    'https://i.ibb.co/HDsCcPMG/IMG-9706.jpg',
+                    'https://i.ibb.co/wZbffRhT/IMG-9707.jpg',
+                    'https://i.ibb.co/fzBFgBSv/IMG-9708.jpg',
+                    'https://i.ibb.co/Z6WNrKhM/IMG-9709.jpg',
+                    'https://i.ibb.co/1tKtGXJR/IMG-9710.jpg',
+                    'https://i.ibb.co/PZKQBDgP/IMG-9711.jpg',
+                    'https://i.ibb.co/0pBBHvcn/IMG-9712.jpg'
+                ]
+            },
+            'Дьяченко Владимир Валерьевич': {
+                photos: [
+                    'https://i.ibb.co/RpKJPL4Q/IMG-9624.jpg',
+                    'https://i.ibb.co/Y4F9YGD5/IMG-9637.jpg',
+                    'https://i.ibb.co/cKXbwbNF/IMG-9656.jpg',
+                    'https://i.ibb.co/7JMKtz9Y/IMG-9661.jpg',
+                    'https://i.ibb.co/35sXLCzg/IMG-9678.jpg',
+                    'https://i.ibb.co/sv78tb1f/IMG-9680.jpg',
+                    'https://i.ibb.co/3y3rLx4h/IMG-9681.jpg',
+                    'https://i.ibb.co/Kxv108HN/IMG-9746.jpg',
+                    'https://i.ibb.co/7LsJCVJ/IMG-9758.jpg',
+                    'https://i.ibb.co/tpNr7bjB/2026-10-21-145302.png',
+                    'https://i.ibb.co/R42nptg6/2026-10-21-145314.png'
+                ],
+                rewards: [
+                    'https://i.ibb.co/YTNzKmYf/IMG-9704.jpg',
+                    'https://i.ibb.co/67BVvtdg/IMG-9715.jpg',
+                    'https://i.ibb.co/xtD5vn7X/IMG-9716.jpg'
+                ]
+            }
+        };
+
+        const ALBUMS = {};
+
+        Object.entries(PHOTO_ALBUMS).forEach(([name, photos]) => {
+            ALBUMS[name] = { photos: photos, rewards: [] };
+        });
+
+        Object.assign(ALBUMS, PARENTS_ARCHIVE, CHILDREN_ARCHIVE);
+
+        ALBUMS['Дьяченко Иван Иванович'] = { photos: [], rewards: [] };
+        ALBUMS['Дьяченко (Котова) Надежда Павловна'] = { photos: [], rewards: [] };
+        ALBUMS['Иванов Евгений Михайлович'] = { photos: [], rewards: [] };
+        ALBUMS['Иванова (Рудь) Александра Родионовна'] = { photos: [], rewards: [] };
+
+        const GENERAL_ALBUM = [
+            'https://i.ibb.co/93NpLTps/IMG-9613.jpg',
+            'https://i.ibb.co/Df1pnVKY/IMG-9614.jpg',
+            'https://i.ibb.co/JYfyZWr/IMG-9622.jpg',
+            'https://i.ibb.co/5x26cJmQ/IMG-9627.jpg',
+            'https://i.ibb.co/HfPKys2Q/IMG-9628.jpg',
+            'https://i.ibb.co/XfYqSpZw/IMG-9629.jpg',
+            'https://i.ibb.co/6Rqbk8yh/IMG-9631.jpg',
+            'https://i.ibb.co/mQzfKN0/IMG-9632.jpg',
+            'https://i.ibb.co/LzwkC2nS/IMG-9633.jpg',
+            'https://i.ibb.co/cSPYRSDP/IMG-9634.jpg',
+            'https://i.ibb.co/wZrxCRSx/IMG-9635.jpg',
+            'https://i.ibb.co/xS2Mwrvz/IMG-9636.jpg',
+            'https://i.ibb.co/hwTmPDY/IMG-9638.jpg',
+            'https://i.ibb.co/7NgWp681/IMG-9643.jpg',
+            'https://i.ibb.co/67sSvb6s/IMG-9645.jpg',
+            'https://i.ibb.co/VcrnKRZK/IMG-9646.jpg',
+            'https://i.ibb.co/nsnxvmm0/IMG-9647.jpg',
+            'https://i.ibb.co/ffyFPZG/IMG-9649.jpg',
+            'https://i.ibb.co/N6N0g0JV/IMG-9650.jpg',
+            'https://i.ibb.co/fztr7qNQ/IMG-9651.jpg',
+            'https://i.ibb.co/gb1S8B88/IMG-9652.jpg',
+            'https://i.ibb.co/wN8dpWvX/IMG-9653.jpg',
+            'https://i.ibb.co/cKnZzxFw/IMG-9659.jpg',
+            'https://i.ibb.co/ZRYqMTfN/IMG-9660.jpg',
+            'https://i.ibb.co/Kpk6t3Pz/IMG-9662.jpg',
+            'https://i.ibb.co/67tcpPyx/IMG-9664.jpg',
+            'https://i.ibb.co/b5qJYfkz/IMG-9670.jpg',
+            'https://i.ibb.co/hFk7g0qZ/IMG-9671.jpg',
+            'https://i.ibb.co/R4cHxs6H/IMG-9673.jpg',
+            'https://i.ibb.co/3yXv3KJW/IMG-9674.jpg',
+            'https://i.ibb.co/VYwZwJZp/IMG-9679.jpg',
+            'https://i.ibb.co/jvw5txV9/IMG-9717.jpg',
+            'https://i.ibb.co/NdTYXWLZ/IMG-9718.jpg',
+            'https://i.ibb.co/0pjR6Qhs/IMG-9721.jpg',
+            'https://i.ibb.co/8gcVKjTk/IMG-9724.jpg',
+            'https://i.ibb.co/5gvrF7GG/IMG-9725.jpg',
+            'https://i.ibb.co/0yc7Hb7F/IMG-9726.jpg',
+            'https://i.ibb.co/7tKygd21/IMG-9729.jpg',
+            'https://i.ibb.co/d0tQCw2F/IMG-9733.jpg',
+            'https://i.ibb.co/7J23swvF/IMG-9736.jpg',
+            'https://i.ibb.co/DDbkgPG1/IMG-9756.jpg',
+            'https://i.ibb.co/xqrR4rFr/IMG-9757.jpg',
+            'https://i.ibb.co/B2WtYnbm/IMG-9764.jpg',
+            'https://i.ibb.co/NdJnGHjw/IMG-9765.jpg',
+            'https://i.ibb.co/gbZvyBzD/IMG-9766.jpg'
+        ];
 
         let currentActiveName = "";
         let activeSlideIndex = 0;
@@ -412,9 +426,14 @@ const GENERAL_ALBUM = [
                 document.getElementById("password-screen").style.display = "none";
                 document.getElementById("main-content").style.display = "block";
                 renderGeneralAlbum();
-            } else { document.getElementById("error-message").style.display = "block"; }
+            } else {
+                document.getElementById("error-message").style.display = "block";
+            }
         }
-        document.getElementById("password-input").addEventListener("keypress", function(e) { if (e.key === "Enter") checkPassword(); });
+
+        document.getElementById("password-input").addEventListener("keypress", function(e) {
+            if (e.key === "Enter") checkPassword();
+        });
 
         function renderGeneralAlbum() {
             const container = document.getElementById('general-album-container');
@@ -435,38 +454,45 @@ const GENERAL_ALBUM = [
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-status').innerText = status;
             document.getElementById('modal-bio').innerText = bio;
-            
+
             const hasRewards = ALBUMS[name] && ALBUMS[name].rewards && ALBUMS[name].rewards.length > 0;
             document.getElementById('modal-tabs').style.display = hasRewards ? 'flex' : 'none';
-            
+
             document.getElementById('tab-photo').classList.add('active');
-            if(document.getElementById('tab-reward')) document.getElementById('tab-reward').classList.remove('active');
-            
+            if (document.getElementById('tab-reward')) {
+                document.getElementById('tab-reward').classList.remove('active');
+            }
+
             buildGallery('photos');
             document.getElementById('profile-modal').classList.add('active');
         }
 
         function buildGallery(type) {
             const box = document.getElementById('modal-gallery-box');
-            const list = (ALBUMS[currentActiveName] && ALBUMS[currentActiveName][type]) ? ALBUMS[currentActiveName][type] : [];
-            
+            const list = (ALBUMS[currentActiveName] && ALBUMS[currentActiveName][type])
+                ? ALBUMS[currentActiveName][type]
+                : [];
+
             if (list.length === 0) {
                 box.innerHTML = `<div class="profile-photo-placeholder">📷<br>Нет фото</div>`;
                 return;
             }
-            
+
             activeSlideIndex = 0;
-            let html = list.map((src, i) => `<img src="${src}" class="gallery-slide ${i===0?'active':''}">`).join('');
+            let html = list.map((src, i) => `<img src="${src}" class="gallery-slide ${i === 0 ? 'active' : ''}">`).join('');
+
             if (list.length > 1) {
                 html += `<button class="nav-arrow prev-arrow" onclick="changeSlide(-1)">&#10094;</button>`;
                 html += `<button class="nav-arrow next-arrow" onclick="changeSlide(1)">&#10095;</button>`;
             }
+
             box.innerHTML = html;
         }
 
         function changeSlide(dir) {
             const slides = document.getElementsByClassName('gallery-slide');
             if (slides.length <= 1) return;
+
             slides[activeSlideIndex].classList.remove('active');
             activeSlideIndex = (activeSlideIndex + dir + slides.length) % slides.length;
             slides[activeSlideIndex].classList.add('active');
@@ -478,7 +504,11 @@ const GENERAL_ALBUM = [
             buildGallery(type === 'photo' ? 'photos' : 'rewards');
         }
 
-        function closeProfile(e) { if (e.target === document.getElementById('profile-modal')) document.getElementById('profile-modal').classList.remove('active'); }
+        function closeProfile(e) {
+            if (e.target === document.getElementById('profile-modal')) {
+                document.getElementById('profile-modal').classList.remove('active');
+            }
+        }
     </script>
 </body>
 </html>
