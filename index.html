@@ -77,9 +77,23 @@
         .album-photo:hover { transform: scale(1.04); border-color: #5C755E; }
         
         .upload-box { background: #EBF2EC; padding: 20px; border-radius: 8px; border: 2px dashed #6B8E23; margin-top: 20px; text-align: center; }
-        .upload-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; align-items: center; }
+        .upload-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
         .upload-row select, .upload-row input { margin: 0; width: auto; flex: 1; min-width: 200px; }
-        .inline-upload-btn { background: #5C755E; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; }
+        .inline-upload-btn { background: #5C755E; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px; display: inline-block; }
+
+        /* Стили для Видеоальбома */
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .video-card { background: #FAF6EE; border: 2px solid #D5CBB7; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; }
+        .video-card:hover { transform: scale(1.03); border-color: #5C755E; }
+        .video-thumbnail { width: 100%; height: 160px; background: #2E2522; display: flex; align-items: center; justify-content: center; color: white; font-size: 40px; }
+        .video-title { padding: 15px; font-weight: bold; color: #4A3E3D; text-align: center; font-size: 15px; }
+        .delete-video-btn { position: absolute; top: 10px; right: 10px; background: rgba(169, 68, 66, 0.9); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+        
+        /* Модальное окно для видео */
+        #video-modal .modal-card { max-width: 1000px; height: auto; max-height: 90vh; background: #1A1A1A; padding: 0; border: none; }
+        #video-modal .close-modal { color: white; right: 25px; top: 15px; }
+        .video-container { width: 100%; height: 70vh; display: flex; align-items: center; justify-content: center; }
+        .video-container iframe, .video-container video { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
@@ -100,9 +114,9 @@
             <button class="action-btn" onclick="window.print()">🖨️ Сохранить в PDF / Печать</button>
         </header>
 
-        <!-- ПАНЕЛЬ ЗАГРУЗКИ -->
+        <!-- ПАНЕЛЬ ЗАГРУЗКИ ФОТО -->
         <section class="section">
-            <h2>➕ Добавить материалы в архив</h2>
+            <h2>➕ Добавить фото в архив</h2>
             <p>Загружайте фотографии прямо со своего компьютера. Выберите, куда именно попадет фото.</p>
             <div class="upload-box">
                 <div class="upload-row">
@@ -128,9 +142,9 @@
                     </select>
                 </div>
                 
-                <div class="upload-row" style="margin-top: 10px;">
+                <div class="upload-row">
                     <input type="file" id="upload-file" accept="image/*" multiple style="background: white; border: 1px solid #B5A896; padding: 10px;">
-                    <button class="action-btn" onclick="handleUpload()">Загрузить</button>
+                    <button class="action-btn" onclick="handleUpload()">Загрузить фото</button>
                 </div>
                 <p id="upload-status" style="margin-top: 15px; font-weight: bold; color: #5C755E;"></p>
             </div>
@@ -205,49 +219,29 @@
             </div>
         </section>
 
-        <div class="modal-overlay" id="profile-modal" onclick="closeProfile(event)">
-            <div class="modal-card">
-                <span class="close-modal" onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</span>
-                <div class="modal-content-split">
-                    <div class="modal-gallery-side">
-                        <div class="tabs-nav" id="modal-tabs">
-                            <button class="tab-btn active" id="tab-photo" onclick="switchTab('photo')">📸 Фотоальбом</button>
-                            <button class="tab-btn" id="tab-reward" onclick="switchTab('reward')">🏆 Награды</button>
-                        </div>
-                        <div class="gallery-container" id="modal-gallery-box"></div>
-                        <!-- Быстрая загрузка внутри карточки -->
-                        <div style="text-align: center; padding-top: 10px;">
-                            <label class="inline-upload-btn" style="cursor: pointer;">
-                                ➕ Загрузить фото в текущий альбом
-                                <input type="file" id="inline-upload-file" accept="image/*" multiple style="display: none;" onchange="handleInlineUpload()">
-                            </label>
-                        </div>
-                    </div>
-                    <div class="modal-info-side">
-                        <div class="profile-cover-container">
-                            <img id="modal-cover-img" class="profile-cover" src="" alt="Обложка">
-                            <br>
-                            <label class="change-cover-btn">
-                                📷 Сменить обложку
-                                <input type="file" id="cover-upload-file" accept="image/*" style="display: none;" onchange="handleCoverUpload()">
-                            </label>
-                        </div>
-                        <h2 id="modal-name" class="modal-name">ФИО</h2>
-                        <p id="modal-status" class="modal-status">Статус</p>
-                        <div id="modal-bio" class="modal-bio">Биография...</div>
-                        
-                        <div class="historical-note">
-                            <h3>📜 Историческая справка</h3>
-                            <p id="modal-history">(Здесь можно будет добавить более подробную историческую информацию)</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!-- ОБЩИЙ ФОТОАЛЬБОМ -->
         <section class="section">
             <h2>📸 Общий семейный фотоальбом</h2>
             <div class="grid-album" id="general-album-container"></div>
+        </section>
+
+        <!-- НОВЫЙ ВИДЕОАЛЬБОМ -->
+        <section class="section">
+            <h2>🎬 Общий видеоальбом</h2>
+            <p>Для больших видео (в том числе 10 ГБ) используйте ссылки на YouTube/VK/Rutube или функцию локального просмотра.</p>
+            
+            <div class="upload-box">
+                <div class="upload-row">
+                    <input type="text" id="video-url-input" placeholder="Вставьте ссылку на YouTube, VK или Rutube">
+                    <button class="action-btn" onclick="addVideoLink()">Добавить ссылку</button>
+                </div>
+                <div style="margin-top: 15px; border-top: 1px dashed #B5A896; padding-top: 15px;">
+                    <p style="margin-bottom: 10px; font-size: 14px;">Или посмотрите видео прямо с компьютера (не сохраняется в базу):</p>
+                    <input type="file" id="local-video-input" accept="video/*" style="background: white; border: 1px solid #B5A896; padding: 10px; width: 100%; max-width: 400px;" onchange="playLocalVideo(this)">
+                </div>
+            </div>
+
+            <div class="video-grid" id="video-album-container"></div>
         </section>
 
         <section class="section">
@@ -266,44 +260,88 @@
         </section>
     </div>
 
+    <!-- МОДАЛЬНОЕ ОКНО ПРОФИЛЯ -->
+    <div class="modal-overlay" id="profile-modal" onclick="closeProfile(event)">
+        <div class="modal-card">
+            <span class="close-modal" onclick="document.getElementById('profile-modal').classList.remove('active')">&times;</span>
+            <div class="modal-content-split">
+                <div class="modal-gallery-side">
+                    <div class="tabs-nav" id="modal-tabs">
+                        <button class="tab-btn active" id="tab-photo" onclick="switchTab('photo')">📸 Фотоальбом</button>
+                        <button class="tab-btn" id="tab-reward" onclick="switchTab('reward')">🏆 Награды</button>
+                    </div>
+                    <div class="gallery-container" id="modal-gallery-box"></div>
+                    <div style="text-align: center; padding-top: 10px;">
+                        <label class="inline-upload-btn" style="cursor: pointer;">
+                            ➕ Загрузить фото в текущий альбом
+                            <input type="file" id="inline-upload-file" accept="image/*" multiple style="display: none;" onchange="handleInlineUpload()">
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-info-side">
+                    <div class="profile-cover-container">
+                        <img id="modal-cover-img" class="profile-cover" src="" alt="Обложка">
+                        <br>
+                        <label class="change-cover-btn">
+                            📷 Сменить обложку
+                            <input type="file" id="cover-upload-file" accept="image/*" style="display: none;" onchange="handleCoverUpload()">
+                        </label>
+                    </div>
+                    <h2 id="modal-name" class="modal-name">ФИО</h2>
+                    <p id="modal-status" class="modal-status">Статус</p>
+                    <div id="modal-bio" class="modal-bio">Биография...</div>
+                    
+                    <div class="historical-note">
+                        <h3>📜 Историческая справка</h3>
+                        <p id="modal-history">(Здесь можно будет добавить более подробную историческую информацию)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО ВИДЕО -->
+    <div class="modal-overlay" id="video-modal" onclick="closeVideoModal(event)">
+        <div class="modal-card">
+            <span class="close-modal" onclick="document.getElementById('video-modal').classList.remove('active')">&times;</span>
+            <div class="video-container" id="video-player-container"></div>
+        </div>
+    </div>
+
     <script>
         const FAMILY_PASSWORD = "NashRod2026";
-
-        // --- БАЗА ДАННЫХ (IndexedDB) ---
+        let currentActiveName = "";
+        let activeSlideIndex = 0;
         let db;
-        const dbRequest = indexedDB.open("FamilyArchiveDB", 2); // Обновили версию БД
+
+        // --- ИНИЦИАЛИЗАЦИЯ БАЗЫ ДАННЫХ ---
+        const dbRequest = indexedDB.open("FamilyArchiveDB", 3);
         dbRequest.onupgradeneeded = (e) => {
             db = e.target.result;
-            if (db.objectStoreNames.contains('photos')) {
-                db.deleteObjectStore('photos'); // Удаляем старую версию без разделения
+            if (!db.objectStoreNames.contains('media')) {
+                db.createObjectStore('media', { keyPath: 'id', autoIncrement: true });
             }
-            db.createObjectStore('media', { keyPath: 'id', autoIncrement: true });
         };
         dbRequest.onsuccess = (e) => { 
             db = e.target.result; 
-            initApp(); // Запускаем после инициализации БД
+            initApp(); 
         };
 
         function saveMedia(memberName, type, dataUrl) {
             return new Promise((resolve, reject) => {
                 const tx = db.transaction('media', 'readwrite');
                 const store = tx.objectStore('media');
-                
-                // Если это обложка, сначала удаляем старую обложку этого человека
                 if (type === 'cover') {
                     const req = store.getAll();
                     req.onsuccess = () => {
                         req.result.forEach(item => {
-                            if (item.memberName === memberName && item.type === 'cover') {
-                                store.delete(item.id);
-                            }
+                            if (item.memberName === memberName && item.type === 'cover') store.delete(item.id);
                         });
                         store.add({ memberName, type, dataUrl });
                     };
                 } else {
                     store.add({ memberName, type, dataUrl });
                 }
-                
                 tx.oncomplete = () => resolve();
                 tx.onerror = () => reject(tx.error);
             });
@@ -332,7 +370,6 @@
             });
         }
 
-        // --- ОБРАБОТКА ИЗОБРАЖЕНИЙ ---
         function resizeImage(file, maxWidth = 1000, maxHeight = 1000) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -359,95 +396,10 @@
             });
         }
 
-        // --- ЗАГРУЗКА ИЗ ОСНОВНОЙ ФОРМЫ ---
-        async function handleUpload() {
-            const target = document.getElementById('upload-target').value;
-            const type = document.getElementById('upload-type').value;
-            const files = document.getElementById('upload-file').files;
-            const status = document.getElementById('upload-status');
-
-            if (files.length === 0) {
-                status.innerText = "Пожалуйста, выберите файлы.";
-                status.style.color = "#A94442";
-                return;
-            }
-
-            if (type === 'cover' && files.length > 1) {
-                status.innerText = "Для обложки выбирайте только один файл.";
-                status.style.color = "#A94442";
-                return;
-            }
-
-            status.innerText = "Загрузка...";
-            status.style.color = "#6E5F54";
-
-            for (let i = 0; i < files.length; i++) {
-                try {
-                    const base64 = await resizeImage(files[i], type === 'cover' ? 500 : 1000); // Обложку сжимаем сильнее
-                    await saveMedia(target, type, base64);
-                } catch (err) {
-                    console.error("Ошибка:", err);
-                }
-            }
-
-            status.innerText = `Успешно загружено!`;
-            status.style.color = "#5C755E";
-            document.getElementById('upload-file').value = "";
-            
-            // Обновляем весь интерфейс
-            await refreshAllViews();
-        }
-
-        // --- ЗАГРУЗКА ВНУТРИ КАРТОЧКИ ---
-        async function handleInlineUpload() {
-            const files = document.getElementById('inline-upload-file').files;
-            if (files.length === 0) return;
-            
-            // Определяем текущую вкладку (фото или награды)
-            const currentType = document.getElementById('tab-photo').classList.contains('active') ? 'photo' : 'reward';
-            
-            for (let i = 0; i < files.length; i++) {
-                const base64 = await resizeImage(files[i]);
-                await saveMedia(currentActiveName, currentType, base64);
-            }
-            
-            document.getElementById('inline-upload-file').value = "";
-            await buildGallery(currentType); // Обновляем текущую галерею
-            await refreshAllAvatars(); // Обновляем аватарки на главной
-        }
-
-        // --- СМЕНА ОБЛОЖКИ ---
-        async function handleCoverUpload() {
-            const file = document.getElementById('cover-upload-file').files[0];
-            if (!file) return;
-            
-            const base64 = await resizeImage(file, 500);
-            await saveMedia(currentActiveName, 'cover', base64);
-            
-            document.getElementById('cover-upload-file').value = "";
-            await loadCoverForProfile(currentActiveName);
-            await refreshAllAvatars();
-        }
-
-        // --- ОТРИСОВКА ИНТЕРФЕЙСА ---
-        let currentActiveName = "";
-        let activeSlideIndex = 0;
-
         async function initApp() {
-            // Загружаем аватарки для карточек на главной
-            await refreshAllAvatars();
-            // Загружаем общий альбом
-            await renderGeneralAlbum();
-        }
-
-        async function refreshAllViews() {
             await refreshAllAvatars();
             await renderGeneralAlbum();
-            if (currentActiveName && document.getElementById('profile-modal').classList.contains('active')) {
-                const currentType = document.getElementById('tab-photo').classList.contains('active') ? 'photo' : 'reward';
-                await buildGallery(currentType);
-                await loadCoverForProfile(currentActiveName);
-            }
+            renderVideoAlbum();
         }
 
         async function refreshAllAvatars() {
@@ -460,7 +412,6 @@
                     if (covers.length > 0) {
                         img.src = covers[0].dataUrl;
                     } else {
-                        // Стандартная заглушка, если обложки нет
                         img.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%23EFEBE4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%238C7B6E%22%20font-family%3D%22Georgia%22%20font-size%3D%2230%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%91%A4%3C%2Ftext%3E%3C%2Fsvg%3E';
                     }
                 }
@@ -470,13 +421,11 @@
         async function renderGeneralAlbum() {
             const container = document.getElementById('general-album-container');
             container.innerHTML = '';
-            
             const media = await getMedia('general', 'photo');
             if (media.length === 0) {
-                container.innerHTML = '<p>В общем альбоме пока нет фотографий. Добавьте их через форму сверху.</p>';
+                container.innerHTML = '<p>В общем альбоме пока нет фотографий.</p>';
                 return;
             }
-
             media.forEach(item => {
                 const img = document.createElement('img');
                 img.src = item.dataUrl;
@@ -503,10 +452,8 @@
             document.getElementById('modal-name').innerText = name;
             document.getElementById('modal-status').innerText = status;
             document.getElementById('modal-bio').innerText = bio;
-
             document.getElementById('tab-photo').classList.add('active');
             document.getElementById('tab-reward').classList.remove('active');
-
             await loadCoverForProfile(name);
             await buildGallery('photo');
             document.getElementById('profile-modal').classList.add('active');
@@ -515,59 +462,43 @@
         async function loadCoverForProfile(name) {
             const img = document.getElementById('modal-cover-img');
             const covers = await getMedia(name, 'cover');
-            if (covers.length > 0) {
-                img.src = covers[0].dataUrl;
-            } else {
-                img.src = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23EFEBE4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%238C7B6E%22%20font-family%3D%22Georgia%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%91%A4%3C%2Ftext%3E%3C%2Fsvg%3E';
-            }
+            img.src = covers.length > 0 ? covers[0].dataUrl : 'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22150%22%20height%3D%22150%22%3E%3Crect%20width%3D%22150%22%20height%3D%22150%22%20fill%3D%22%23EFEBE4%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%238C7B6E%22%20font-family%3D%22Georgia%22%20font-size%3D%2240%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%91%A4%3C%2Ftext%3E%3C%2Fsvg%3E';
         }
 
         async function buildGallery(type) {
             const box = document.getElementById('modal-gallery-box');
-            
             const media = await getMedia(currentActiveName, type);
-
             if (media.length === 0) {
                 box.innerHTML = `<div class="profile-photo-placeholder">📷<br>В этом альбоме пока нет фото</div>`;
                 return;
             }
-
             activeSlideIndex = 0;
             let html = media.map((item, i) => 
-                `<div style="width:100%; height:100%; display:${i === 0 ? 'block' : 'none'};" class="gallery-slide-wrapper" data-id="${item.id}">
+                `<div style="width:100%; height:100%; display:${i === 0 ? 'block' : 'none'};" class="gallery-slide-wrapper">
                     <img src="${item.dataUrl}" class="gallery-slide active" style="object-fit:contain;">
-                    <button class="delete-photo-btn" onclick="removePhoto(${item.id}, '${type}')">🗑️ Удалить</button>
+                    <button class="delete-photo-btn" onclick="removePhoto(${item.id}, '${type}')">🗑️</button>
                 </div>`
             ).join('');
-
             if (media.length > 1) {
                 html += `<button class="nav-arrow prev-arrow" onclick="changeSlide(-1)">&#10094;</button>`;
                 html += `<button class="nav-arrow next-arrow" onclick="changeSlide(1)">&#10095;</button>`;
             }
-            
-            // Мы используем обертку для каждого слайда, чтобы кнопка удаления была привязана к конкретному фото
             box.innerHTML = html;
-            updateSliderDisplay();
-        }
-
-        function updateSliderDisplay() {
-            const wrappers = document.querySelectorAll('.gallery-slide-wrapper');
-            wrappers.forEach((w, index) => {
-                w.style.display = index === activeSlideIndex ? 'block' : 'none';
-            });
         }
 
         function changeSlide(dir) {
             const wrappers = document.querySelectorAll('.gallery-slide-wrapper');
             if (wrappers.length <= 1) return;
+            wrappers[activeSlideIndex].style.display = 'none';
             activeSlideIndex = (activeSlideIndex + dir + wrappers.length) % wrappers.length;
-            updateSliderDisplay();
+            wrappers[activeSlideIndex].style.display = 'block';
         }
 
         async function removePhoto(id, type) {
-            if (confirm("Вы уверены, что хотите удалить это фото?")) {
+            if (confirm("Удалить это фото?")) {
                 await deleteMedia(id);
                 await buildGallery(type);
+                await refreshAllAvatars();
             }
         }
 
@@ -577,13 +508,147 @@
             await buildGallery(type);
         }
 
+        async function handleUpload() {
+            const target = document.getElementById('upload-target').value;
+            const type = document.getElementById('upload-type').value;
+            const files = document.getElementById('upload-file').files;
+            if (files.length === 0) return alert("Выберите файлы!");
+            for (let i = 0; i < files.length; i++) {
+                const base64 = await resizeImage(files[i], type === 'cover' ? 500 : 1000);
+                await saveMedia(target, type, base64);
+            }
+            document.getElementById('upload-file').value = "";
+            alert("Фото загружены!");
+            await refreshAllAvatars();
+            await renderGeneralAlbum();
+        }
+
+        async function handleInlineUpload() {
+            const files = document.getElementById('inline-upload-file').files;
+            if (files.length === 0) return;
+            const currentType = document.getElementById('tab-photo').classList.contains('active') ? 'photo' : 'reward';
+            for (let i = 0; i < files.length; i++) {
+                const base64 = await resizeImage(files[i]);
+                await saveMedia(currentActiveName, currentType, base64);
+            }
+            document.getElementById('inline-upload-file').value = "";
+            await buildGallery(currentType);
+        }
+
+        async function handleCoverUpload() {
+            const file = document.getElementById('cover-upload-file').files[0];
+            if (!file) return;
+            const base64 = await resizeImage(file, 500);
+            await saveMedia(currentActiveName, 'cover', base64);
+            await loadCoverForProfile(currentActiveName);
+            await refreshAllAvatars();
+        }
+
         function closeProfile(e) {
-            if (e.target === document.getElementById('profile-modal')) {
-                document.getElementById('profile-modal').classList.remove('active');
+            if (e.target === document.getElementById('profile-modal')) document.getElementById('profile-modal').classList.remove('active');
+        }
+
+        // --- ЛОГИКА ВИДЕОАЛЬБОМА ---
+        function getVideoLinks() {
+            return JSON.parse(localStorage.getItem('familyVideoLinks') || '[]');
+        }
+
+        function saveVideoLinks(links) {
+            localStorage.setItem('familyVideoLinks', JSON.stringify(links));
+        }
+
+        function addVideoLink() {
+            const input = document.getElementById('video-url-input');
+            const url = input.value.trim();
+            if (!url) return alert("Вставьте ссылку!");
+            
+            const links = getVideoLinks();
+            links.push(url);
+            saveVideoLinks(links);
+            
+            input.value = "";
+            renderVideoAlbum();
+        }
+
+        function renderVideoAlbum() {
+            const container = document.getElementById('video-album-container');
+            const links = getVideoLinks();
+            container.innerHTML = '';
+
+            if (links.length === 0) {
+                container.innerHTML = '<p style="text-align:center; width:100%;">Видеоальбом пока пуст. Добавьте ссылку или откройте локальный файл.</p>';
+                return;
+            }
+
+            links.forEach((url, index) => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                
+                // Делаем красивую обложку-заглушку
+                card.innerHTML = `
+                    <div class="video-thumbnail">▶</div>
+                    <div class="video-title">Видео ${index + 1}</div>
+                    <button class="delete-video-btn" onclick="event.stopPropagation(); removeVideoLink(${index})">🗑️</button>
+                `;
+                
+                card.onclick = () => openVideoModal(url);
+                container.appendChild(card);
+            });
+        }
+
+        function removeVideoLink(index) {
+            if (confirm("Удалить это видео из альбома?")) {
+                const links = getVideoLinks();
+                links.splice(index, 1);
+                saveVideoLinks(links);
+                renderVideoAlbum();
             }
         }
 
-        // Авторизация
+        function playLocalVideo(input) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            // Создаем временную ссылку на файл (Blob URL)
+            const videoUrl = URL.createObjectURL(file);
+            openVideoModal(videoUrl, true);
+            
+            // Очищаем input, чтобы можно было выбрать тот же файл снова
+            input.value = "";
+        }
+
+        function openVideoModal(url, isLocal = false) {
+            const container = document.getElementById('video-player-container');
+            container.innerHTML = '';
+
+            // Проверяем, является ли ссылка YouTube / VK / Rutube (нужен iframe)
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                let videoId = '';
+                if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+                else if (url.includes('watch?v=')) videoId = url.split('watch?v=')[1].split('&')[0];
+                
+                container.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen allow="autoplay"></iframe>`;
+            } 
+            else if (url.includes('vk.com') || url.includes('vkvideo.ru')) {
+                // Для VK лучше использовать прямую ссылку на iframe из кода "Экспорт"
+                container.innerHTML = `<iframe src="${url}" allowfullscreen></iframe>`;
+            }
+            else {
+                // Если это прямая ссылка на MP4 или локальный файл (Blob URL)
+                container.innerHTML = `<video src="${url}" controls autoplay style="background:#000;"></video>`;
+            }
+
+            document.getElementById('video-modal').classList.add('active');
+        }
+
+        function closeVideoModal(e) {
+            if (e.target === document.getElementById('video-modal')) {
+                document.getElementById('video-modal').classList.remove('active');
+                document.getElementById('video-player-container').innerHTML = ''; // Останавливаем видео
+            }
+        }
+
+        // АВТОРИЗАЦИЯ
         function checkPassword() {
             if (document.getElementById("password-input").value === FAMILY_PASSWORD) {
                 document.getElementById("password-screen").style.display = "none";
